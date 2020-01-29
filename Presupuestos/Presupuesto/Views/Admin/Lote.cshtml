@@ -1,0 +1,282 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Lote";
+}
+
+<!--Contenido-->
+<!-- Content Wrapper. Contains page content -->
+<!-- Main content -->
+<section class="content-wrapper">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div data-bind="visible: model.loteController.gridMode()">
+                        <div class="box-header with-border">
+                            <h1 class="box-title">Lotes Principales <button class="btn btn-success" data-bind="click: model.loteController.nuevo"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                            <div class="box-tools pull-right">
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- centro -->
+                        <div class="panel-body table-responsive" style="height: 400px;" id="listadoregistros">
+                            <table id="loteGrid" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Nombre</th>
+                                        <th>Centro de Costo</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="dataTablesForEach : {
+                                    data: model.loteController.lotes,
+                                    options: dataTableOptions
+                                  }">
+                                    <tr>
+                                        <td data-bind="text: codigo"></td>
+                                        <td data-bind="text: nombre"></td>
+                                        <td data-bind="text: centroCosto"></td>
+                                        <td><span class="label" data-bind="text: (estado === 'A' ? 'Activo' : 'Inactivo'), css: (estado === 'A' ? 'label-info' : 'label-danger')"></span></td>
+                                        <td>
+                                            <a href="#" class="btn btn-warning btn-xs" data-bind="click: model.loteController.editar"><i class="fa fa-pencil"></i></a>
+                                            <!-- ko if: estado == 'A' -->
+                                            <a href="#" class="btn btn-danger btn-xs" data-bind="click: model.loteController.remover"><i class="fa fa-trash-o"></i></a>
+                                            <!-- /ko -->
+                                            <!-- ko if: estado == 'I' -->
+                                            <a href="#" class="btn btn-primary btn-xs" data-bind="click: model.loteController.activar"><i class="fa fa-check"></i></a>
+                                            <!-- /ko -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--Fin centro -->
+                    </div>
+
+                    <div class="content" data-bind="visible: model.loteController.insertMode()">
+
+                        <form name="loteForm" id="loteForm" class="form" data-bind="with: model.loteController.lote">
+                            <div class="row">
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="codigo">Codigo<span class="text-danger"> *</span></label>
+                                    <input id="codigo" name="codigo" type="text" class="form-control" data-bind="value: codigo"
+                                           data-error=".errorCodigo"
+                                           minlength="3" maxlength="100" required>
+                                    <span class="errorCodigo text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="nombre">Nombre<span class="text-danger"> *</span></label>
+                                    <input id="nombre" name="nombre" type="text" class="form-control" data-bind="value: nombre"
+                                           data-error=".errorNombre"
+                                           minlength="3" maxlength="100" required>
+                                    <span class="errorNombre text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="nombre">Centro de costo<span class="text-danger"> *</span></label>
+                                    <select class="form-control" id="fincaId" data-bind="options: model.loteController.ccostos, optionsText: 'descripcion', optionsValue: 'codigo', value: fincaId"></select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-sm-12 col-md-12">
+                                    <label for="descripcion">Descripcion</label>
+                                    <textarea id="descripcion" name="descipcion" rows="3" type="text" class="form-control" data-bind="value: descripcion"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <p class="text-center">
+                                    <button type="button" class="btn btn-info" data-bind="click:  model.loteController.guardar, disable: model.loteController.disable() "><i class="fa fa-save"></i> Guardar</button>
+                                    <button type="button" class="btn btn-danger" data-bind="click:  model.loteController.cancelar"><i class="fa fa-undo"></i> Cancelar</button>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div data-bind="visible: model.loteController.gridModeSublote()">
+                        <div class="box-header with-border">
+                            <h1 class="box-title">Lotes <button class="btn btn-success" data-bind="click: model.loteController.nuevoSublote"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                            <div class="box-tools pull-right">
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- centro -->
+                        <div class="panel-body table-responsive" style="height: 400px;" id="listadoregistros">
+                            <table id="subloteGrid" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Nombre</th>
+                                        <th>Techado</th>
+                                        <th>Factor Manzana</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="dataTablesForEach : {
+                                    data: model.loteController.sublotes,
+                                    options: dataTableOptions
+                                  }">
+                                    <tr>
+                                        <td data-bind="text: codigo"></td>
+                                        <td data-bind="text: nombre"></td>
+                                        <td data-bind="text: techado"></td>
+                                        <td data-bind="text: factor_manzana"></td>
+                                        <td><span class="label" data-bind="text: (estado === 'A' ? 'Activo' : 'Inactivo'), css: (estado === 'A' ? 'label-info' : 'label-danger')"></span></td>
+                                        <td>
+                                            <a href="#" class="btn btn-warning btn-xs" data-bind="click: model.loteController.editarSubLote"><i class="fa fa-pencil"></i></a>
+                                            <!-- ko if: estado == 'A' -->
+                                            <a href="#" class="btn btn-danger btn-xs" data-bind="click: model.loteController.removerSublote"><i class="fa fa-trash-o"></i></a>
+                                            <!-- /ko -->
+                                            <!-- ko if: estado == 'I' -->
+                                            <a href="#" class="btn btn-primary btn-xs" data-bind="click: model.loteController.activarSublote"><i class="fa fa-check"></i></a>
+                                            <!-- /ko -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--Fin centro -->
+                    </div>
+
+                    <div class="content" data-bind="visible: model.loteController.insertModeSublote()">
+
+                        <form name="subloteForm" id="subloteForm" class="form" data-bind="with: model.loteController.sublote">
+                            <div class="row">
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="codigo">Codigo<span class="text-danger"> *</span></label>
+                                    <input id="codigo" name="codigo" type="text" class="form-control" data-bind="value: codigo"
+                                           data-error=".errorCodigo"
+                                           minlength="3" maxlength="100" required>
+                                    <span class="errorNombre text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="nombre">Nombre<span class="text-danger"> *</span></label>
+                                    <input id="nombre" name="nombre" type="text" class="form-control" data-bind="value: nombre"
+                                           data-error=".errorNombre"
+                                           minlength="3" maxlength="100" required>
+                                    <span class="errorNombre text-danger help-inline"></span>
+                                </div>
+                                <div data-bind="visible: model.loteController.codigoLote() === 'FCAY001'" class="form-group col-sm-4 col-md-4">
+                                    <label for="nombre">Region<span class="text-danger"> *</span></label>
+                                    <select class="form-control" id="regionId" 
+                                            data-bind="options: model.ccostoController.regiones, 
+                                            optionsText: function(type) {return type.Codigo+'-'+type.Nombre}, 
+                                            optionsValue: 'Codigo',
+                                            optionsCaption: '---Seleccione Region---',
+                                            value: region"></select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-sm-2 col-md-2">
+                                    <label for="metros">Metros<span class="text-danger"> *</span></label>
+                                    <input id="metros" name="metros" type="number" step="0.01" class="form-control" data-bind="value: metros"
+                                           data-error=".errorMetros" required>
+                                    <span class="errorMetros text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-2 col-md-2">
+                                    <label for="ancho">Ancho<span class="text-danger"> *</span></label>
+                                    <input id="ancho" name="ancho" type="number" step="0.01" class="form-control" data-bind="value: ancho"
+                                           data-error=".errorAncho" required>
+                                    <span class="errorAncho text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-2 col-md-2">
+                                    <label for="altura">Altura<span class="text-danger"> *</span></label>
+                                    <input id="altura" name="altura" type="number" step="0.01" class="form-control" data-bind="value: altura"
+                                           data-error=".errorAltura" required>
+                                    <span class="errorAltura text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <label for="densidad">Densidad<span class="text-danger"> *</span></label>
+                                    <input id="densidad" name="densidad" type="number" step="0.01" class="form-control" data-bind="value: densidad"
+                                           data-error=".errorDensidad" required>
+                                    <span class="errorDensidad text-danger help-inline"></span>
+                                </div>
+
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <label for="factor_manzana">Factor Manzana</label>
+                                    <input id="factor_manzana" name="densidad" type="number" step="0.01" class="form-control" data-bind="value: factor_manzana"
+                                           data-error=".factor_manzana">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="techado">Techado</label>
+                                    <select class="form-control" id="techado" data-bind="options: model.loteController.isTechado, optionsText: 'nombre', optionsValue: 'valor', value: techado"></select>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="culitivo">Cultivo<span class="text-danger"> *</span></label>
+                                    <select class="form-control" id="cultivoId" data-bind="options: model.loteController.cultivos,
+                                        optionsText: 'Descripcion', optionsValue: 'Codigo', value: model.loteController.GrupoCultivo,
+                                        event: { change: model.loteController.seleccionar}"></select>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="nombre">Variedad <span class="text-danger"> *</span></label>
+                                    <select class="form-control" id="fincaId" data-bind="options: model.loteController.variedades, optionsText: 'Descripcion', optionsValue: 'Codigo', value: variedadId"></select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <label for="fecha_inicio">Fecha Inicio</label>
+                                    <input id="fecha_inicio" name="fecha_inicio" type="date" class="form-control" data-bind="datePicker : fecha_inicio"
+                                           data-error=".fecha_inicio">
+                                </div>
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <label for="fecha_fin">Fecha Fin</label>
+                                    <input id="fecha_fin" name="fecha_inicio" type="date"  class="form-control" data-bind="datePicker : fecha_fin"
+                                           data-error=".fecha_fin">
+                                </div>
+                            </div>
+
+                            @*<div class="row">
+            <div class="form-group col-sm-12 col-md-12">
+                <label>Variedades<span class="text-danger"> *</span></label>
+            </div>
+            <!-- ko foreach: {data: model.loteController.variedades, as: 'variedad'} -->
+            <div class="col-sm-6 col-md-6">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="" data-bind="value: variedad.Codigo, checked: model.loteController.addVariedades"><span data-bind="text: variedad.Descripcion"></span>
+                    </label>
+                </div>
+            </div>
+            <!-- /ko -->
+
+        </div>*@
+                            <div class="row">
+                                <div class="form-group col-sm-12 col-md-12">
+                                    <label for="descripcion">Descripcion</label>
+                                    <textarea id="descripcion" name="descipcion" rows="3" type="text" class="form-control" data-bind="value: descripcion"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <p class="text-center">
+                                    <button type="button" class="btn btn-info" data-bind="click:  model.loteController.guardarSublote "><i class="fa fa-save"></i> Guardar</button>
+                                    <button type="button" class="btn btn-danger" data-bind="click:  model.loteController.cancelarSublote"><i class="fa fa-undo"></i> Cancelar</button>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </section>
+</section><!-- /.content -->
+<!--Fin-Contenido-->
+
+<script>
+    $(document).ready(function () {
+        model.loteController.initialize();
+    });
+</script>
+
+
+
+
+
+
+
+

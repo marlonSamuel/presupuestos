@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Seleccionar";
+    var paises = new Model.SPUsuario().GetPaises(Helpers.SessionHelper.GetUser());
+    var usuario = new Model.SPUsuario().Obtener(Helpers.SessionHelper.GetUser());
+}
+
+<!-- Main content -->
+<section class="">
+    <section class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="panel-body callout callout-success">
+                        Seleccione pais
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- centro -->
+                    <div class="panel-body table-responsive" style="height: 400px;" id="listadoregistros">
+                        <div class="row">
+                            <!-- ko foreach: {data: model.seleccionController.paises, as: 'p'} -->
+                            <div class="col-lg-3 col-xs-6">
+                                <!-- small box -->
+                                <div class="small-box bg-aqua">
+                                    <div class="inner">
+                                        <h4 data-bind="text: p.pais"></h4>
+
+                                        <p data-bind="text: p.nombre"></p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fa fa-flag"></i>
+                                    </div>
+                                    <a data-bind="click: model.seleccionController.irA" href="#" class="small-box-footer">
+                                        <i class="fa fa-arrow-circle-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <!--/ko -->
+                        </div>
+                    </div>
+                    <!--Fin centro -->
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </section>
+</section><!-- /.content -->
+<!--Fin-Contenido-->
+
+<script>
+    $(function () {
+        $('footer').removeClass('main-footer');
+        model.seleccionController.initialize();
+    });
+</script>
+

@@ -1,0 +1,157 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "usuario";
+}
+
+<!--Contenido-->
+<!-- Content Wrapper. Contains page content -->
+<!-- Main content -->
+<section class="content-wrapper">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div data-bind="visible: model.usuarioController.gridMode()">
+                        <div class="box-header with-border">
+                            <h1 class="box-title">Usuarios <button class="btn btn-success" data-bind="click: model.usuarioController.nuevo"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                            <div class="box-tools pull-right">
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- centro -->
+                        <div class="panel-body table-responsive" style="height: 400px;" id="listadoregistros">
+                            <table id="usuarioGrid" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Email</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="dataTablesForEach : {
+                                    data: model.usuarioController.usuarios,
+                                    options: dataTableOptions
+                                  }">
+                                    <tr>
+                                        <td data-bind="text: usuario"></td>
+                                        <td data-bind="text: email"></td>
+                                        <td><span class="label" data-bind="text: (estado === 'A' ? 'Activo' : 'Inactivo'), css: (estado === 'A' ? 'label-info' : 'label-danger')"></span></td>
+                                        <td>
+                                            <a href="#" class="btn btn-warning btn-xs" data-bind="click: model.usuarioController.editar"><i class="fa fa-pencil"></i></a>
+                                            <a href="#" class="btn btn-danger btn-xs" data-bind="click: model.usuarioController.remover"><i class="fa fa-trash-o"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--Fin centro -->
+                    </div>
+
+                    <div class="content" data-bind="visible: model.usuarioController.insertMode()">
+
+                        <form name="usuarioForm" id="usuarioForm" class="form" data-bind="with: model.usuarioController.usuario">
+                            <div class="row">
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="usuario">Usuario<span class="text-danger"> *</span></label>
+                                    <input id="usuario" name="usuario" type="text" class="form-control" data-bind="value: usuario"
+                                           data-error=".errorUsuario" required>
+                                    <span class="errorUsuario text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="email">Email<span class="text-danger"> *</span></label>
+                                    <input id="email" name="email" type="email" class="form-control" data-bind="value: email"
+                                           data-error=".email" required>
+                                    <span class="email text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="password">Contraseña<span class="text-danger"> *</span></label>
+                                    <input id="password" name="password" type="password" class="form-control" data-bind="value: password"
+                                           data-error=".password" required>
+                                    <span class="password text-danger help-inline"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-sm-12 col-md-12">
+                                    <label>presupuestos<span class="text-danger"> *</span></label>
+                                </div>
+                                <!-- ko foreach: {data: model.usuarioController.presupuestos, as: 'p'} -->
+                                <div class="col-sm-4 col-md-4">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="" data-bind="value: p.tipoId, checked: model.usuarioController.usuario.presupuestos()"><span data-bind="text: p.nombre"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- /ko -->
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-sm-12 col-md-12">
+                                    <label>Paises<span class="text-danger"> *</span></label>
+                                    @*<input type="checkbox" value="" data-bind="checked: model.usuarioController.isSelected(), click: model.usuarioController.selectAll">*@
+                                </div>
+                                <!-- ko foreach: {data: model.usuarioController.paises, as: 'pais'} -->
+                                <div class="col-sm-4 col-md-4">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="" data-bind="value: pais.Id, checked: model.usuarioController.usuario.paises()"><span data-bind="text: pais.nombre"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- /ko -->
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-sm-12 col-md-12">
+                                    <label>Permisos<span class="text-danger"> *</span></label>
+                                    @*<input type="checkbox" value="" data-bind="checked: model.usuarioController.isSelected(), click: model.usuarioController.selectAll">*@
+                                </div>
+                                <!-- ko foreach: {data: model.usuarioController.permisos, as: 'permiso'} -->
+                                <div class="col-sm-4 col-md-4">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="" data-bind="value: permiso.Id, checked: model.usuarioController.usuario.permisos()"><span data-bind="text: permiso.nombre"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- /ko -->
+
+                            </div>
+                            <div class="form-group">
+                                <p class="text-center">
+                                    <button type="button" class="btn btn-info" data-bind="click:  model.usuarioController.guardar, disable: model.usuarioController.disable() "><i class="fa fa-save"></i> Guardar</button>
+                                    <button type="button" class="btn btn-danger" data-bind="click:  model.usuarioController.cancelar"><i class="fa fa-undo"></i> Cancelar</button>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </section>
+</section><!-- /.content -->
+<!--Fin-Contenido-->
+
+<script>
+        $(document).ready(function () {
+            model.usuarioController.initialize();
+
+        });
+</script>
+
+
+
+
+
+
+
+
+
+
+

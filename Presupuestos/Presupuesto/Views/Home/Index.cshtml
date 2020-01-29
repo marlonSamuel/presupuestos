@@ -1,0 +1,57 @@
+﻿@{
+                /**/
+
+                var pais = new Model.SPPais().GetById(Convert.ToInt32(Helpers.SessionHelper.GetPais()));
+}
+<!-- Main content -->
+
+<section class="content-wrapper">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h1 class="box-title">Presupuestos </h1>
+                        <div class="box-tools pull-right">
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- centro -->
+                    <div class="table-responsive" id="listadoregistros">
+                        <div class="callout callout-info">
+                            <h4>BIENVENIDO <span data-bind="text: model.seleccionController.usuario()"></span></h4>
+                            <p>
+                                Seleccione a una opcion del menu para continuar
+                            </p>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-lg-12">
+                            <img class="img-responsive imagen_head img-bordered-sm" src="~/public/img/planesahome.png" />
+                        </div>
+                    </div>
+
+                    @*<p>
+                        <button data-bind="click: model.graficaController.showBar">Barras</button>
+                        <button data-bind="click: model.graficaController.showLine">Líneas</button>
+                    </p>*@
+                    @*<canvas width="800" height="400" data-bind="chartType: model.graficaController.type(), chartData: model.graficaController.sales"></canvas>*@
+                    <!--Fin centro -->
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </section>
+</section><!-- /.content -->
+<!--Fin-Contenido-->
+
+@if (pais != null)
+{
+    <script>
+    $(document).ready(function () {
+            window.Pais = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(pais));
+            model.seleccionController.setNamePais();
+            model.graficaController.initialize();
+        });
+    </script>
+}
+
+

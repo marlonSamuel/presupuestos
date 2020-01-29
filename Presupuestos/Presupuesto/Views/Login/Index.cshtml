@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewBag.Title = "Autenticación";
+}
+
+
+
+    <body class="hold-transition login-page bodyLogin">
+        <div class="login-box">
+            <!-- /.login-logo -->
+            <div class="login-logo">
+                <b>PS_PLANESA</b>
+            </div>
+            <div class="login-box-body">
+                <p class="login-box-msg"><b>inicie sesion</b></p>
+
+                @using (Html.BeginForm("Acceder", "Login", FormMethod.Post))
+                {
+                    <div class="form-group">
+                        <div class="form-group has-feedback">
+                            <input name="Email" type="text" class="form-control" placeholder="Ingrese correo">
+                            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <input type="password" name="Password" class="form-control" placeholder="contraseña">
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+                    <div class="text-right">
+                        <button data-ajax="true" type="submit" class="btn btn-success">
+                            Ingresar
+                        </button>
+                    </div>
+                }
+
+            </div>
+            <!-- /.login-box-body -->
+        </div>
+
+
+        <script>
+            $(function () {
+                $('footer').removeClass('main-footer');
+            });
+        </script>
+
+
+    </body>

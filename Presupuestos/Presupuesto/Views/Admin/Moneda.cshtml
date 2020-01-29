@@ -1,0 +1,112 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "moneda";
+}
+
+<!--Contenido-->
+<!-- Content Wrapper. Contains page content -->
+<!-- Main content -->
+<section class="content-wrapper">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div data-bind="visible: model.monedaController.gridMode()">
+                        <div class="box-header with-border">
+                            <h1 class="box-title">monedas <button class="btn btn-success" data-bind="click: model.monedaController.nuevo"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                            <div class="box-tools pull-right">
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- centro -->
+                        <div class="panel-body table-responsive" style="height: 400px;" id="listadoregistros">
+                            <table id="monedaGrid" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Moneda</th>
+                                        <th>Nombre</th>
+                                        <th>Simbolo</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="dataTablesForEach : {
+                                    data: model.monedaController.monedas,
+                                    options: dataTableOptions
+                                  }">
+                                    <tr>
+                                        <td data-bind="text: moneda"></td>
+                                        <td data-bind="text: nombre"></td>
+                                        <td data-bind="text: simbolo"></td>
+                                        <td>
+                                            <a href="#" class="btn btn-warning btn-xs" data-bind="click: model.monedaController.editar"><i class="fa fa-pencil"></i></a>
+                                            <a href="#" class="btn btn-danger btn-xs" data-bind="click: model.monedaController.remover"><i class="fa fa-trash-o"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--Fin centro -->
+                    </div>
+
+                    <div class="content" data-bind="visible: model.monedaController.insertMode()">
+
+                        <form name="monedaForm" id="monedaForm" class="form" data-bind="with: model.monedaController.moneda">
+                            <div class="row">
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label for="moneda">Moneda<span class="text-danger"> *</span></label>
+                                    <input id="moneda" name="nombre" type="text" class="form-control" data-bind="value: moneda"
+                                           data-error=".moneda" required>
+                                    <span class="errorNombre text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label for="nombre">Nombre<span class="text-danger"> *</span></label>
+                                    <input id="nombre" name="nombre" type="text" class="form-control" data-bind="value: nombre"
+                                           data-error=".errorNombre" required>
+                                    <span class="errorNombre text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label for="iso">Iso<span class="text-danger"> *</span></label>
+                                    <input id="iso" name="iso" type="text" class="form-control" data-bind="value: iso"
+                                           data-error=".iso" required>
+                                    <span class="iso text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label for="simbolo">Simbolo<span class="text-danger"> *</span></label>
+                                    <input id="simbolo" name="simbolo" type="text" class="form-control" data-bind="value: simbolo"
+                                           data-error=".simbolo" maxlength="1" required>
+                                    <span class="simbolo text-danger help-inline"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <p class="text-center">
+                                    <button type="button" class="btn btn-info" data-bind="click:  model.monedaController.guardar, disable: model.monedaController.disable() "><i class="fa fa-save"></i> Guardar</button>
+                                    <button type="button" class="btn btn-danger" data-bind="click:  model.monedaController.cancelar"><i class="fa fa-undo"></i> Cancelar</button>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </section>
+</section><!-- /.content -->
+<!--Fin-Contenido-->
+
+<script>
+        $(document).ready(function () {
+            model.monedaController.initialize();
+        });
+</script>
+
+
+
+
+
+
+
+
+
+
+

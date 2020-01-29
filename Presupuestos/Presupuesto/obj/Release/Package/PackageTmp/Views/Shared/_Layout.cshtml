@@ -1,0 +1,345 @@
+﻿@{
+    Layout = null;
+    string controlador = ViewContext.RouteData.Values["Controller"].ToString().ToLower();
+
+   //string paisId = System.Configuration.ConfigurationManager.AppSettings["paisId"];
+
+    Model.SPUsuario usuario = new Model.SPUsuario().Obtener(Helpers.SessionHelper.GetUser());
+
+    var pais = new Model.SPPais().GetById(Convert.ToInt32(Helpers.SessionHelper.GetPais()));
+
+    Model.Shared.GetPermisos permisos = new Model.Shared.GetPermisos().GetAllPerms(Helpers.SessionHelper.GetUser());
+
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>@ViewBag.Title</title>
+
+    <link href="~/public/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/public/css/AdminLTE.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Assets/css/toastr.min.css" rel="stylesheet" />
+    <link href="~/public/datatables/responsive.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Assets/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Assets/datatables/datatables.min.css" rel="stylesheet" />
+
+    <link href="~/public/css/_all-skins.min.css" rel="stylesheet" />
+    <link href="~/public/css/blue.css" rel="stylesheet" />
+    <link href="~/Scripts/Assets/css/custom.css" rel="stylesheet" />
+
+    <link rel="apple-touch-icon" src="~/public/img/apple-touch-icon.png" />
+    <link rel="shortcut icon" src="~/public/img/favicon.ico" />
+    <link href="~/public/css/bootstrap-select.min.css" rel="stylesheet" />
+
+
+    <script src="~/public/js/jquery-3.1.1.min.js"></script>
+    <script src="~/public/js/Chart.min.js"></script>
+    <script src="~/public/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/Assets/datatables/datatables.min.js"></script>
+    <script src="~/public/js/ini.js"></script>
+    <script src="~/public/js/app.min.js"></script>
+    <script src="~/Scripts/Assets/js/jquery.validate.js"></script>
+    <script src="~/public/js/jquery.form.js"></script>
+    <script src="~/Scripts/Assets/js/knockout-3.4.2.js"></script>
+    <script src="~/Scripts/Assets/js/knockout.mapping.js"></script>
+    <script src="~/Scripts/Assets/js/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
+
+
+    <script src="~/public/datatables/pdfmake.min.js"></script>
+    <script src="~/public/js/jquery.blockUI.js"></script>
+
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/public/js/bootbox.min.js"></script>
+
+    <script src="~/Scripts/Assets/js/bootstrap-select.min.js"></script>
+    <script src="~/Content/js/model.js"></script>
+    <!-- Script js -->
+    <script src="~/Content/js/Cultivo.js"></script>
+    <script src="~/Content/js/ccosto.js"></script>
+    <script src="~/Content/js/variedad.js"></script>
+    <script src="~/Content/js/actividad.js"></script>
+    <script src="~/Content/js/lote.js"></script>
+    <script src="~/Content/js/presupuestoIndex.js"></script>
+    <script src="~/Content/js/presupuestom.js"></script>
+    <script src="~/Content/Ajax/Unidad.js"></script>
+    <script src="~/Content/Ajax/Presentacion.js"></script>
+    <script src="~/Content/js/tipoEmpleado.js"></script>
+    <script src="~/Content/js/departamento.js"></script>
+    <script src="~/Content/Ajax/Categoria.js"></script>
+    <script src="~/Content/js/producto.js"></script>
+    <script src="~/Content/js/cargo.js"></script>
+    <script src="~/Content/js/empleado.js"></script>
+    <script src="~/Content/js/region.js"></script>
+    <script src="~/Content/js/usuario.js"></script>
+    <script src="~/Content/js/permiso.js"></script>
+    <script src="~/Content/js/moneda.js"></script>
+    <script src="~/Content/js/pais.js"></script>
+    <script src="~/Content/js/seleccionPais.js"></script>
+    <script src="~/Content/js/grupoDimension.js"></script>
+    <script src="~/Content/js/dimension.js"></script>
+    <script src="~/Content/js/subccosto.js"></script>
+    <script src="~/Content/Ajax/SubLote.js"></script>
+    <script src="~/Content/js/tipoActividad.js"></script>
+    <script src="~/Content/js/tipoCambio.js"></script>
+    <script src="~/Content/js/grafica.js"></script>
+    <!-- Script ajax -->
+    <script src="~/Content/Ajax/Cultivo.js"></script>
+    <script src="~/Content/Ajax/CCosto.js"></script>
+    <script src="~/Content/Ajax/Variedad.js"></script>
+    <script src="~/Content/Ajax/Actividad.js"></script>
+    <script src="~/Content/Ajax/Lote.js"></script>
+    <script src="~/Content/Ajax/Presupuesto.js"></script>
+    <script src="~/Content/js/unidad.js"></script>
+    <script src="~/Content/js/presentacion.js"></script>
+    <script src="~/Content/Ajax/TipoEmpleado.js"></script>
+    <script src="~/Content/Ajax/Departamento.js"></script>
+    <script src="~/Content/js/categoria.js"></script>
+    <script src="~/Content/Ajax/Producto.js"></script>
+    <script src="~/Content/Ajax/Cargo.js"></script>
+    <script src="~/Content/Ajax/Empleado.js"></script>
+    <script src="~/Content/Ajax/Region.js"></script>
+    <script src="~/Content/Ajax/DetallePresupuesto.js"></script>
+    <script src="~/Content/Ajax/Usuario.js"></script>
+    <script src="~/Content/Ajax/Permiso.js"></script>
+    <script src="~/Content/Ajax/Moneda.js"></script>
+    <script src="~/Content/Ajax/Pais.js"></script>
+    <script src="~/Content/Ajax/GrupoDimension.js"></script>
+    <script src="~/Content/Ajax/Dimension.js"></script>
+    <script src="~/Content/Ajax/SubCentro.js"></script>
+    <script src="~/Content/Ajax/TipoActividad.js"></script>
+    <script src="~/Content/Ajax/BI.js"></script>
+    <script src="~/Content/Ajax/TipoCambio.js"></script>
+    <script src="~/Content/Ajax/Grafica.js"></script>
+    <script src="~/Content/Ajax/Pcontable.js"></script>
+    <script>
+        $(document).ready(function () {
+            console.log("applyBindings");
+            ko.applyBindings();
+
+            $('[data-toggle="tooltip"]').tooltip();
+
+            window.Pais = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(pais));
+            window.User = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(usuario));
+            model.seleccionController.setNamePais();
+        });
+    </script>
+</head>
+
+@if (controlador != "login")
+{
+    <body class="hold-transition skin-green-light sidebar-mini">
+
+
+        <div class="wrapper">
+            <header class="main-header">
+
+                <!-- Logo -->
+                <a href="/" class="logo">
+                    <!-- mini logo for sidebar mini 50x50 pixels -->
+                    <span class="logo-mini"><b>IT</b>Presupuestos</span>
+                    <!-- logo for regular state and mobile devices -->
+                    <span class="logo-lg"><b>PS_Planesa </b></span>
+                </a>
+
+                <!-- Header Navbar: style can be found in header.less -->
+                <nav class="navbar navbar-static-top" role="navigation">
+                    <!-- Sidebar toggle button-->
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Navegación</span>
+                    </a>
+                    <!-- Navbar Right Menu -->
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown user user-menu">
+                                <a class="dropdown-toggle" data-toggle="dropdown">
+                                    <span data-bind="text: model.seleccionController.pais.nombre()"> </span>
+                                </a>
+                            </li>
+                            <!-- Messages: style can be found in dropdown.less-->
+                            <!-- User Account: style can be found in dropdown.less -->
+                            <li class="dropdown user user-menu">
+                                <a class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="~/public/img/planesa.png" class="user-image" />
+                                    <span>@usuario.usuario </span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- User image -->
+
+                                    <li class="user-header">
+                                        <img src="~/public/img/planesa.png" class="img-circle" alt="User Image">
+                                        <p>
+                                            <small>PURE FRESH</small>
+                                        </p>
+                                    </li>
+
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
+                                        <div class="pull-left">
+                                            <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                                        </div>
+
+                                        <div class="pull-right">
+                                            <a id="salir" href="#" class="btn btn-default btn-flat">Cerrar</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </nav>
+            </header>
+            <!-- Left side column. contains the logo and sidebar -->
+            <aside class="main-sidebar">
+                <!-- sidebar: style can be found in sidebar.less -->
+                <section class="sidebar">
+                    <!-- sidebar menu: : style can be found in sidebar.less -->
+                    <ul class="sidebar-menu">
+                        <li class="header"></li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-tasks"></i> <span>Escritorio</span>
+                            </a>
+                        </li>
+                        @if (permisos.almacen != null)
+    {
+
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-folder"></i> <span>Almacen</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>@Html.ActionLink(" Categorias", "categoria", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                            <li>@Html.ActionLink(" Productos Agroinsumos", "producto", new { controller = "Admin", tipo = "A" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                            <li>@Html.ActionLink(" Productos Ventas", "producto", new { controller = "Admin", tipo = "V" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                        </ul>
+                    </li>
+}
+
+                    @*<li class="treeview">
+        <a href="#">
+            <i class="fa fa-folder"></i> <span>Recursos Humanos</span>
+            <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li>@Html.ActionLink(" Departamentos", "departamento", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+            <li>@Html.ActionLink(" Tipos Empleados", "tipoEmpleado", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+            <li>@Html.ActionLink(" Cargos", "cargo", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+            <li>@Html.ActionLink(" Empleados", "empleado", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+        </ul>
+    </li>*@
+
+                        @if (permisos.fincas != null)
+    {
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-folder"></i> <span>Fincas</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>@Html.ActionLink(" Centros de Costo", "CCosto", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                            <li>@Html.ActionLink(" Lotes", "lote", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                            @*<li>@Html.ActionLink(" Tipos de Actividad", "tipoActividad", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>*@
+                            <li>@Html.ActionLink(" Actividades", "actividad", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                            <li>@Html.ActionLink(" Cultivos", "cultivo", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                            <li>@Html.ActionLink(" Variedades", "variedad", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                            <li>@Html.ActionLink(" Presentaciones", "presentacion", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                            <li>@Html.ActionLink(" Unidades de medida", "unidad", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                        </ul>
+                    </li>
+
+}
+                        @if (permisos.paises != null)
+    {
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-folder"></i> <span>Paises</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>@Html.ActionLink(" Paises", "pais", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                            <li>@Html.ActionLink(" Monedas", "moneda", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                            <li>@Html.ActionLink(" Tipo de Cambio", "tipocambio", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                        </ul>
+                    </li>
+}
+
+                        @if (permisos.dimensiones != null)
+    {
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-folder"></i> <span>Dimensiones</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>@Html.ActionLink(" Grupos", "grupoDimension", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                            <li>@Html.ActionLink(" Dimensiones", "dimension", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                        </ul>
+                    </li>
+}
+
+
+                        <li class="treeview">
+                            @Html.ActionLink(" Presupuesto", "index", new { controller = "Presupuesto" }, htmlAttributes: new { @class = "fa fa-tasks" })
+                        </li>
+
+                        @if (permisos.acceso != null)
+    {
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-folder"></i> <span>Acceso</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li>@Html.ActionLink(" Usuarios", "usuario", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+                            <li>@Html.ActionLink(" Permisos", "permiso", new { controller = "Admin" }, htmlAttributes: new { @class = "fa fa-circle-o" })</li>
+
+                        </ul>
+                    </li>
+
+                    @*<li class="treeview">
+                        <a href="/reporte/index">
+                            <i class="fa fa-circle"></i> <span>Reportes</span>
+                        </a>
+                    </li>*@
+}
+
+                    </ul>
+                </section>
+                <!-- /.sidebar -->
+            </aside>
+            @RenderBody()
+        </div>
+    </body>
+
+}
+else
+{
+    @RenderBody()
+}
+</html>
+
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        <b>Version</b> 1.0
+    </div>
+    <strong>&copy; @DateTime.Now.Year - Presupuestos.</strong>
+</footer>
+
+<script>
+    $(document).ready(function () {
+        $("#salir").click(function () {
+            window.location.href = route+'/login/Logout';
+        });
+    });
+</script>
+
+

@@ -1,0 +1,209 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Centro de Costo";
+}
+
+<!--Contenido-->
+<!-- Content Wrapper. Contains page content -->
+<!-- Main content -->
+<section class="content-wrapper">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div data-bind="visible: model.ccostoController.gridMode()">
+                        <div class="box-header with-border">
+                            <h1 class="box-title">Grupos Centros de Costo / Regiones<button data-bind="click: model.ccostoController.nuevo" class="btn btn-success"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                            <div class="box-tools pull-right">
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- centro -->
+                        <div class="panel-body table-responsive" style="height: 400px;" id="listadoregistros">
+                            <table id="ccostoGrid" class="table table-hover table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Descripcion</th>
+                                        @*<th>Region</th>*@
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="dataTablesForEach : {
+                                    data: model.ccostoController.ccostos,
+                                    options: dataTableOptions
+                                  }">
+                                    <tr>
+                                        <td data-bind="text: codigo"></td>
+                                        <td data-bind="text: descripcion"></td>
+                                        @*<td data-bind="text: Region"></td>*@
+                                        <td>
+                                            <a href="#" class="btn btn-warning btn-xs" data-bind="click: model.ccostoController.editar"><i class="fa fa-pencil"></i></a>
+                                            <a href="#" class="btn btn-danger btn-xs" data-bind="click: model.ccostoController.remover"><i class="fa fa-trash-o"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--Fin centro -->
+                    </div>
+
+
+                    <div class="content" data-bind="visible: model.ccostoController.insertMode() || model.ccostoController.editMode()">
+
+                        <form name="ccostoForm" id="ccostoForm" class="form" data-bind="with: model.ccostoController.ccosto">
+                            <div class="row">
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label for="codigo">Codigo<span class="text-danger"> *</span></label>
+                                    <input id="codigo" name="codigo" type="text" class="form-control" data-bind="value: codigo"
+                                           data-error=".errorCodigo"
+                                           minlength="3" maxlength="100" required>
+                                    <span class="errorCodigo text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label for="nombre">Nombre<span class="text-danger"> *</span></label>
+                                    <input id="descripcion" name="descripcion" type="text" class="form-control" data-bind="value: descripcion"
+                                           data-error=".errorNombre"
+                                           minlength="3" maxlength="100" required>
+                                    <span class="errorNombre text-danger help-inline"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label for="codigoNav">Codigo Nav<span class="text-danger"> *</span></label>
+                                    <input id="codigoNav" name="codigoNav" type="text" class="form-control" data-bind="value: codigoNav"
+                                           data-error=".codigoNav"
+                                           minlength="3" maxlength="100" required>
+                                    <span class="codigoNav text-danger help-inline"></span>
+                                </div>
+                                @*<div class="form-group col-sm-4 col-md-4">
+                                    <label for="nombre">Region<span class="text-danger"> *</span></label>
+                                    <select class="form-control" id="regionId" data-bind="options: model.ccostoController.regiones, optionsText: 'Nombre', optionsValue: 'Codigo', value: region"></select>
+                                </div>*@
+                            </div>
+
+                            <div class="form-group">
+                                <p class="text-center">
+                                    <button type="button" class="btn btn-info" data-bind="click:  model.ccostoController.guardar, visible: model.ccostoController.insertMode(), disable: model.ccostoController.disable()"><i class="fa fa-save"></i> Guardar</button>
+                                    <button type="button" class="btn btn-info" data-bind="click:  model.ccostoController.actualizar, visible: model.ccostoController.editMode(), disable: model.ccostoController.disable()"><i class="fa fa-save"></i> Guardar</button>
+                                    <button type="button" class="btn btn-danger" data-bind="click:  model.ccostoController.cancelar"><i class="fa fa-undo"></i> Cancel</button>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="content" data-bind="model.ccostoController.editMode()">
+                        <hr />
+                        <!-- centro -->
+                        <div data-bind="visible: model.SubCCostoController.gridMode()">
+                            <div class="box-header with-border">
+                                <h1 class="box-title">centros de costo <button data-bind="click: model.SubCCostoController.nuevo" class="btn btn-success"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                                <div class="box-tools pull-right">
+                                </div>
+                            </div>
+                            <!-- /.box-header -->
+                            <!-- centro -->
+                            <div class="panel-body table-responsive" style="height: 400px;" id="listadoregistros">
+                                <table id="subcentroCostoGrid" class="table table-hover table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">Codigo</th>
+                                            <th>Nombre</th>
+                                            <th width="15%">Codigo Nav</th>
+                                            <th width="10%">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-bind="dataTablesForEach : {
+                                    data: model.SubCCostoController.SubCCostos,
+                                    options: dataTableOptions
+                                  }">
+                                        <tr>
+                                            <td data-bind="text: codigo"></td>
+                                            <td data-bind="text: nombre"></td>
+                                            <td data-bind="text: codigo_nav"></td>
+                                            <td>
+                                                <a href="#" class="btn btn-warning btn-xs" data-bind="click: model.SubCCostoController.editar"><i class="fa fa-pencil"></i></a>
+                                                <a href="#" class="btn btn-danger btn-xs" data-bind="click: model.SubCCostoController.remover"><i class="fa fa-trash-o"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--Fin centro -->
+                        </div>
+                        <!--Fin centro -->
+
+                        <div data-bind="visible: model.SubCCostoController.insertMode()">
+                            <form name="SubCCostoForm" id="SubCCostoForm" class="form" data-bind="with: model.SubCCostoController.subCCosto">
+                                <div class="row">
+                                    <div class="form-group col-sm-6 col-md-6">
+                                        <label for="codigo">Codigo<span class="text-danger"> *</span></label>
+                                        <input id="codigo" name="codigo" type="text" class="form-control" data-bind="value: codigo"
+                                               data-error=".codigo"
+                                               minlength="3" maxlength="100" required>
+                                        <span class="codigo text-danger help-inline"></span>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-6">
+                                        <label for="nombre">Nombre<span class="text-danger"> *</span></label>
+                                        <input id="nombre" name="nombre" type="text" class="form-control" data-bind="value: nombre"
+                                               data-error=".nombre"
+                                               minlength="3" maxlength="100" required>
+                                        <span class="nombre text-danger help-inline"></span>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-6">
+                                        <label for="codigo_nav">Codigo Nav<span class="text-danger"> *</span></label>
+                                        <input id="codigo_nav" name="descripcion" type="text" class="form-control" data-bind="value: codigo_nav"
+                                               data-error=".codigo_nav"
+                                               minlength="3" maxlength="100" required>
+                                        <span class="codigo_nav text-danger help-inline"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-sm-12 col-md-12">
+                                        <label>Seleccione Actividades del Centro de Costo<span class="text-danger"> *</span></label>
+
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-lg-3">
+                                        <input class="form-control" placeholder="buscar por nombre" data-bind="value: model.SubCCostoController.search, valueUpdate: 'keyup'" autocomplete="off">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!-- ko foreach: {data: model.SubCCostoController.filterSearch, as: 'actividad'} -->
+                                    <div class="col-sm-3 col-md-3">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="" data-bind="value: actividad.Id, checked: model.SubCCostoController.subCCosto.actividades"><span data-bind="text: actividad.nombre"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <!-- /ko -->
+                                </div>
+                                <div class="form-group">
+                                    <p class="text-center">
+                                        <button type="button" class="btn btn-info" data-bind="click:  model.SubCCostoController.guardar"><i class="fa fa-save"></i> Guardar</button>
+                                        <button type="button" class="btn btn-danger" data-bind="click:  model.SubCCostoController.cancelar"><i class="fa fa-undo"></i> Cancelar</button>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </section>
+</section><!-- /.content -->
+<!--Fin-Contenido-->
+
+<script>
+        $(document).ready(function () {
+            model.ccostoController.initialize();
+        });
+</script>
+
+

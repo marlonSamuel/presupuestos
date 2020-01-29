@@ -1,0 +1,11 @@
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Helpers\bin\Release\Helpers.dll.config
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Helpers\bin\Release\Helpers.dll
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Helpers\bin\Release\Helpers.pdb
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Helpers\obj\Release\Helpers.csproj.CoreCompileInputs.cache
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Helpers\obj\Release\Helpers.dll
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Helpers\obj\Release\Helpers.pdb
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Helpers\bin\Release\EntityFramework.dll
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Helpers\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Helpers\bin\Release\EntityFramework.xml
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Helpers\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Helpers\obj\Release\Helpers.csprojResolveAssemblyReference.cache

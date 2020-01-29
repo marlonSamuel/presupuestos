@@ -1,0 +1,94 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Cultivo";
+}
+
+<!--Contenido-->
+<!-- Content Wrapper. Contains page content -->
+    <!-- Main content -->
+    <section class="content-wrapper">
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h1 class="box-title">Cultivos <button class="btn btn-success"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                            <div class="box-tools pull-right">
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- centro -->
+                        <div class="panel-body table-responsive" style="height: 400px;" id="listadoregistros">
+                            <table id="categoriaGrid" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Descripcion</th>
+                                        <th>Grupo Cultivo</th>
+                                        <th>Estado</th>
+                                        @*<th>Acciones</th>*@
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="dataTablesForEach : {
+                                    data: model.cultivoController.cultivos,
+                                    options: dataTableOptions
+                                  }">
+                                    <tr>
+                                        <td data-bind="text: codigo"></td>
+                                        <td data-bind="text: descripcion"></td>
+                                        <td data-bind="text: grupo"></td>
+                                        <td><span class="label" data-bind="text: (activo === 1 ? 'Activo' : 'Inactivo'), css: (activo === 1 ? 'label-info' : 'label-danger')"></span></td>
+                                        @*<td>
+                                        <a href="#" class="btn btn-warning btn-xs" data-bind="click: model.cultivoController.editar"><i class="fa fa-pencil"></i></a>
+                                        <a href="#" class="btn btn-danger btn-xs" data-bind="click: model.cultivoController.remover"><i class="fa fa-trash-o"></i></a>
+                                    </td>*@
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--Fin centro -->
+
+                        <div data-bind="visible: model.cultivoController.insertMode()">
+
+                            <form name="cultivoForm" id="cultivoForm" class="form" data-bind="with: model.cultivoController.cultivo">
+                                <div class="row">
+                                    <div class="form-group col-sm-7 col-md-7">
+                                        <label for="codigo">Codigo<span class="text-danger"> *</span></label>
+                                        <input id="codigo" name="codigo" type="text" class="form-control" data-bind="value: codigo"
+                                               data-error=".errorCodigo"
+                                               minlength="3" maxlength="100" required>
+                                        <span class="errorCodigo text-danger help-inline"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-sm-7 col-md-7">
+                                        <label for="nombre">Nombre<span class="text-danger"> *</span></label>
+                                        <input id="descripcion" name="descripcion" type="text" class="form-control" data-bind="value: descripcion"
+                                               data-error=".errorNombre"
+                                               minlength="3" maxlength="100" required>
+                                        <span class="errorNombre text-danger help-inline"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p class="text-center">
+                                        <button type="button" class="btn btn-info" data-bind="click:  model.cultivoController.guardar, disable: model.cultivoController.disable() "><i class="fa fa-save"></i> Guardar</button>
+                                        <button type="button" class="btn btn-danger" data-bind="click:  model.cultivoController.cancelar"><i class="fa fa-undo"></i> Cancelar</button>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- /.box -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+
+        </section>
+    </section><!-- /.content -->
+
+<!--Fin-Contenido-->
+
+    <script>
+        $(document).ready(function () {
+            model.cultivoController.initialize();
+        });
+    </script>

@@ -1,0 +1,982 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Detalle Presupusto";
+
+    var tipoId = Request.Params["id"];
+
+    var tipo = new Model.SPTipoPresupuesto().GetById(Convert.ToInt32(tipoId));
+  
+}
+
+<!--Contenido-->
+<!-- Content Wrapper. Contains page content -->
+<!-- Main content -->
+<section class="content-wrapper">
+    <section class="content">
+        <div data-bind="visible: model.presupuestoMController.createMode()" class="row">
+            <div class="col-md-12">
+                <div class="box" data-bind="visible: model.presupuestoMController.optionMode()">
+                    <div class="box-header with-border">
+                        @if (tipo != null)
+    {
+
+                    <h1 class="box-title">Presupuesto @tipo.nombre</h1>
+}
+                        <div class="box-tools pull-right">
+                            <a id="volver" class="btn btn-danger"><i class="fa fa-undo"> Volver</i></a>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        <div class="panel-body callout callout-success">
+                            Seleccione opcion
+                        </div>
+                        <div class="row">
+                            <!-- ko foreach: {data: model.presupuestoMController.tipoOption, as: 'tipo'} -->
+                            <div class="col-lg-3 col-xs-6">
+                                <!-- small box -->
+                                <div class="small-box bg-yellow-gradient">
+                                    <div class="inner">
+                                        <h3><sup data-bind="text: tipo.nombre" style="font-size: 20px"></sup></h3><br />
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <a data-bind="click: model.presupuestoMController.seleccionar" href="#" class="small-box-footer">
+                                        <i class="fa fa-arrow-circle-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+
+                </div>
+                <div class="box">
+                    <div data-bind="visible: model.presupuestoMController.gridMode()">
+                        <div class="box-header with-border">
+                            <h1>
+                                <span class="box-title" data-bind="text: model.presupuestoMController.title()"> </span>
+                                <button class="btn btn-success" data-bind="click: model.presupuestoMController.nuevo"><i class="fa fa-plus-circle"></i> Crear</button>
+                                <button class="btn btn-danger" data-bind="click: model.presupuestoMController.volver, visible: model.presupuestoMController.codigoPresupuesto() !== 'P_CT'"><i class="fa fa-undo"></i> Volver</button>
+                                <button id="volver2" class="btn btn-danger" data-bind="visible: model.presupuestoMController.codigoPresupuesto() === 'P_CT'"><i class="fa fa-undo"></i> Volver</button>
+                            </h1>
+                            <div class="box-tools pull-right">
+                            </div>
+                        </div>
+
+                        <div class="content">
+                            <div class="panel-body table-responsive" style="height: 400px;" id="listadoregistros">
+                                <table id="loteGrid" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Presupuesto</th>
+                                            <th class="text-right">total</th>
+                                            <th>Estado</th>
+                                            <th></th>
+                                            <th width="30%">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-bind="dataTablesForEach : {
+                                    data: model.presupuestoMController.presupuestos,
+                                    options: dataTableOptions
+                                  }">
+                                        <tr>
+                                            <!-- ko if: tipo == "S" -->
+                                            @*<td data-bind="text: 'semana '+semana+' del '+año"></td>*@
+                                            <td data-bind="text: (semana < 10 ? 'semana 0'+semana+' del '+año : 'semana '+semana+' del '+año)"></td>
+
+                                            <!-- /ko -->
+                                            <!-- ko if: tipo == "Q" -->
+                                            <td data-bind="text: (semana < 10 ? 'quincena 0'+quincena+' del '+año : 'quincena '+quincena+' del '+año)"></td>
+                                            <!-- /ko -->
+                                            <!-- ko if: tipo == "M" -->
+                                            <td data-bind="text: (mes < 10 ? 'mes 0'+mes+' del '+año : 'mes '+mes+' del '+año)"></td>
+                                            <!-- /ko -->
+                                            <!-- ko if: tipo == "A" -->
+                                            <td data-bind="text: año"></td>
+                                            <!-- /ko -->
+                                            <td class="text-right" data-bind="text: formatCurrency(parseFloat(total_estimado).toFixed(2))"></td>
+                                            <td>
+                                                <span class="label" data-bind="text: (estado === 'I' ? 'Iniciado' : 'Finalizado'), css: (estado === 'I' ? 'label-success' : 'label-info')"></span>
+                                                @*<a href="#" class="btn btn-info btn-xs" data-bind="click: model.presupuestoMController.viewStatus" data-toggle="modal" data-target="#status"><i class="fa fa-eye-slash"></i> Ver</a>*@
+                                            </td>
+                                            <td>
+                                                <a href="#" class="btn btn-success btn-xs" data-bind="click: model.presupuestoMController.cargaMasiva"><i class="fa fa-file-excel-o"></i> Carga masiva</a>
+                                            </td>
+                                            <td>
+                                                <a href="#" class="btn btn-success btn-xs" data-bind="click: model.presupuestoMController.nuevoDetalle"><i class="fa fa-plus-square"></i> Añadir a Presupuesto</a>
+                                                <a href="#" class="btn btn-primary btn-xs" data-bind="click: model.presupuestoMController.view"><i class="fa fa-eye-slash"></i></a>
+                                                <a href="#" class="btn btn-warning btn-xs" data-bind="click: model.presupuestoMController.editar"><i class="fa fa-pencil"></i></a>
+                                                <a href="#" class="btn btn-danger btn-xs" data-bind="click: model.presupuestoMController.remover"><i class="fa fa-trash-o"></i></a>
+                                                <a href="#" class="btn btn-default btn-xs" data-bind="click: model.presupuestoMController.exelAgricola"><i class="fa fa-file-excel-o"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--Fin centro -->
+                        </div>
+
+                    </div>
+
+                    <!--formulario para la carga masiva -->
+                    <div class="content" data-bind="visible: model.presupuestoMController.isFile()">
+                        <div class="panel-body callout callout-success">
+                            <h3><span data-bind="text: model.presupuestoMController.title2()"></span></h3>
+                        </div>
+                        <h5 class="page-header">Seleccione archivo</h5>
+                        <form enctype="multipart/form-data">
+                            <div class="form-group col-sm-6 col-lg-6">
+                                <input id="inputFile" class="form-control" type="file" name="files[]" />
+                            </div>
+                            <div class="form-group">
+                                <button data-bind="click: model.presupuestoMController.saveFile,
+                                                   enable: model.presupuestoMController.buttonFile()" class="btn btn-success">
+                                    <i class="fa fa-plus-square"></i> Guardar
+                                </button>
+                                <button type="button" class="btn btn-danger" data-bind="click:  model.presupuestoMController.cancelar"><i class="fa fa-undo"></i> Volver</button>
+                            </div>
+
+                            <textarea class="form-control" rows=10 cols=120 id="xlx_json"  readonly></textarea>
+                        </form>
+                    </div>
+
+                    <div class="content" data-bind="visible: model.presupuestoMController.insertMode()">
+                        <form name="presupuestoForm" id="presupuestoForm" class="form" data-bind="with: model.presupuestoMController.presupuesto">
+                            <div class="row">
+                                @*<div class="form-group col-sm-4 col-md-4">
+                        <label for="nombre">Centro de costo<span class="text-danger"> *</span></label>
+                        <select class="form-control" id="fincaId" data-bind="options: model.presupuestoMController.ccostos, optionsText: 'descripcion', optionsValue: 'codigo', value: fincaId"></select>
+                    </div>*@
+                                <div data-bind="visible: tipo() == 'S'" class="form-group col-sm-3 col-md-3">
+                                    <label for="nombre">Semana<span class="text-danger"> *</span></label>
+                                    <input id="nombre" name="semana" type="text" class="form-control" data-bind="value: semana"
+                                           data-error=".errorSemana" required>
+                                    <span class="errorSemana text-danger help-inline"></span>
+                                </div>
+                                <div data-bind="visible: tipo() == 'Q'" class="form-group col-sm-3 col-md-3">
+                                    <label for="quincena">Quincena<span class="text-danger"> *</span></label>
+                                    <input id="quincena" name="quincena" type="number" class="form-control" data-bind="value: quincena"
+                                           data-error=".quincena" required>
+                                    <span class="errorNombre text-danger help-inline"></span>
+                                </div>
+                                <div data-bind="visible: tipo() == 'M'" class="form-group col-sm-3 col-md-3">
+                                    <label for="mes">Mes<span class="text-danger"> *</span></label>
+                                    <input id="mes" name="mes" type="number" class="form-control" data-bind="value: mes"
+                                           data-error=".mes" required>
+                                    <span class="mes text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <label for="año">Año<span class="text-danger"> *</span></label>
+                                    <input id="año" name="año" type="number" class="form-control" data-bind="value: año"
+                                           data-error=".año" required>
+                                    <span class="año text-danger help-inline"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <p class="text-center">
+                                    <button type="button" class="btn btn-info" data-bind="click:  model.presupuestoMController.guardar "><i class="fa fa-save"></i> Guardar</button>
+                                    <button type="button" class="btn btn-danger" data-bind="click:  model.presupuestoMController.cancelar"><i class="fa fa-undo"></i> Volver</button>
+                                </p>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="content">
+                        <form name="detalleForm" id="detalleForm" class="form" data-bind="with: model.presupuestoMController.detalle">
+                            <div class="panel-body callout callout-success" data-bind="visible: model.presupuestoMController.insertModeDetalle() || model.presupuestoMController.detalleMode()">
+                                <h3><span data-bind="text: model.presupuestoMController.title2()"></span></h3>
+                                <h3><span class="pull-right" data-bind="text: 'Total: '+ formatCurrency(model.presupuestoMController.total().toFixed(2))"></span></h3>
+                            </div>
+                            <div class="row">
+                                <div data-bind="visible: model.presupuestoMController.insertModeDetalle()">
+                                    <div class="container page-header">
+                                        <h5 for="nombre">Seleccione centro de costo: </h5>
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-4 col-lg4">
+                                        <select class="form-control" id="fincaId" data-bind="options: model.presupuestoMController.ccostos, optionsText: function(type) {return type.CodigoNAV+'-'+type.descripcion}, optionsValue: 'codigo', value: codigoCC,
+                                                                                             event: { change: model.presupuestoMController.selectSubCentroCosto(codigoCC())}"></select>
+                                    </div>
+
+                                    <div class="form-group col-sm-4 col-md-4">
+                                        <select class="form-control" id="fincaId" data-bind="options: model.presupuestoMController.subccostos, optionsText: function(type) {return type.codigo_nav+'-'+type.nombre}, optionsValue: 'Id', value: fincaId"></select>
+                                    </div>
+
+                                    <div class="form-group col-sm-4 col-md-4 col-lg-4">
+                                        <button type="button" class="btn btn-primary" data-bind="click:  model.presupuestoMController.selectCCosto "><i class="fa fa-check"></i> Seleccionar</button>
+                                        <button type="button" class="btn btn-danger" data-bind="click:  model.presupuestoMController.cancelar"><i class="fa fa-undo"></i> Volver</button>
+                                    </div>
+                                </div>
+
+                                <div data-bind="visible: model.presupuestoMController.detalleMode()">
+                                    <div class="col-md-12">
+                                        <div id="displayClass" class="box box-success collapsed-box">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">Nuevo</h3>
+
+                                                @*<div class="box-tools pull-right">
+                                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>*@
+                                                <!-- /.box-tools -->
+                                            </div>
+                                            <!-- /.box-header -->
+                                            <div id="displayId" class="collapse box-body">
+
+                                                <div class="form-group col-sm-3 col-md-3">
+                                                    <label for="lote">Lote<span class="text-danger"> *</span></label>
+                                                    <select class="form-control" id="subloteId" data-live-search="true"
+                                                            data-bind="selectPicker: true,
+                                                            optionsText: 'nombre',
+                                                            optionsValue: 'Id',
+                                                            value: loteId,
+                                                            selectPickerOptions: { optionsArray: model.presupuestoMController.lotes},
+                                                            event: { change: model.presupuestoMController.selectSubLotebyId(loteId())}"></select>
+                                                </div>
+
+                                                <div data-bind="visible: model.presupuestoMController.codigoPresupuesto==='P_CS'" class="form-group col-sm-2 col-md-2">
+                                                    <label for="cultivo">Cultivo</label>
+                                                    <input id="cultivo" name="cultivo" type="text" class="form-control" data-bind="value: cultivo" readonly>
+                                                    <span class="cantidad text-danger help-inline"></span>
+                                                </div>
+
+                                                <div data-bind="visible: model.presupuestoMController.codigoPresupuesto() == 'P_MO'" class="form-group col-sm-4 col-md-4">
+                                                    <label for="tipo">Tipo Personal<span class="text-danger"> *</span></label>
+                                                    <select class="form-control" id="tipo" data-bind="options: model.presupuestoMController.tipo, optionsText: 'nombre', optionsValue: 'valor', value: tipo,
+                                                            event: { change: model.presupuestoMController.selectTipoActividad(tipo())}"></select>
+                                                </div>
+
+                                                <div data-bind="visible: model.presupuestoMController.codigoPresupuesto() == 'P_MO'" class="form-group col-sm-3 col-md-3">
+                                                    <label for="actividad">Actividad<span class="text-danger"> *</span></label>
+                                                    <select id="referencia" class="form-control" data-live-search="true"
+                                                            data-bind="selectPicker: true,
+                                                            optionsText: 'nombre',
+                                                            optionsValue: 'codigo',
+                                                            value: referencia,
+                                                            selectPickerOptions: { optionsArray: model.presupuestoMController.actividades },
+                                                            event: { change: model.presupuestoMController.selectActividad(referencia())}"></select>
+                                                </div>
+                                                <div data-bind="visible: model.presupuestoMController.codigoPresupuesto() == 'P_AG'" class="form-group col-sm-4 col-md-4">
+                                                    <label for="categoria">Categorias productos<span class="text-danger"> *</span></label>
+                                                    <select class="form-control" id="fincaId"
+                                                            data-bind="options: model.presupuestoMController.categorias,
+                                                            optionsText: function(type) {return type.codigo+'-'+type.nombre},
+                                                            optionsValue: 'codigo', value: categoriaId,
+                                                            event: { change: model.presupuestoMController.selectCategoria(categoriaId())}"></select>
+                                                </div>
+
+                                                <div data-bind="visible: model.presupuestoMController.codigoPresupuesto() == 'P_AG'|| model.presupuestoMController.codigoPresupuesto()=='P_VT'" class="form-group col-sm-4 col-md-4">
+                                                    <label for="categoria">Grupo/Familia Producto<span class="text-danger"> *</span></label>
+                                                    <select class="form-control" id="grupoId" data-live-search="true"
+                                                            data-bind="selectPicker: true,
+                                                            optionsText: function(type) {return type.codigo+'-'+type.nombre},
+                                                            optionsValue: 'codigo',
+                                                            value: grupoId,
+                                                            selectPickerOptions: { optionsArray: model.presupuestoMController.grupos },
+                                                            event: { change: model.presupuestoMController.selectGrupo(grupoId())}"></select>
+                                                </div>
+
+                                                <div data-bind="visible: model.presupuestoMController.codigoPresupuesto() == 'P_AG' || model.presupuestoMController.codigoPresupuesto()=='P_VT'" class="form-group col-sm-5 col-md-5">
+                                                    <label for="categoria">Productos<span class="text-danger"> *</span></label>
+                                                    <select class="form-control" id="referencia_producto" data-live-search="true"
+                                                            data-bind="selectPicker: true,
+                                                            optionsText: function(type) {return type.codigo+'-'+type.nombre},
+                                                            optionsValue: 'codigo',
+                                                            value: referencia_producto,
+                                                            selectPickerOptions: { optionsArray: model.presupuestoMController.productos},
+                                                            event: { change: model.presupuestoMController.selectProducto(referencia_producto())}"></select>
+                                                </div>
+
+                                                <div data-bind="visible: model.presupuestoMController.codigoPresupuesto()=='P_CS'" class="form-group col-sm-2 col-md-2">
+                                                    <label for="nombre">Unidad de medida<span class="text-danger"> *</span></label>
+                                                    <select class="form-control" id="fincaId" data-bind="options: model.presupuestoMController.unidades, optionsText: 'nombre', optionsValue: 'unidadId', value: unidad_by_p_cs"></select>
+                                                </div>
+
+                                                <div data-bind="visible: model.presupuestoMController.codigoPresupuesto()!=='P_CS'" class="form-group col-sm-2 col-md-2">
+                                                    <label for="costo_actividad">Costo Unitario</label>
+                                                    <input id="costo_actividad" name="cantidad" type="number" class="form-control" data-bind="value: costo_actividad"
+                                                           data-error=".costo_actividad" readonly>
+                                                    <span class="costo_actividad text-danger help-inline"></span>
+                                                </div>
+
+                                                <div data-bind="visible: model.presupuestoMController.codigoPresupuesto() === 'P_CS'" class="form-group col-sm-2 col-md-2">
+                                                    <label for="costo_by_p_cs">Costo Unitario</label>
+                                                    <input id="costo_by_p_cs" name="cantidad" type="number" class="form-control" data-bind="value: costo_by_p_cs"
+                                                           data-error=".costo_by_p_cs">
+                                                    <span class="costo_by_p_cs text-danger help-inline"></span>
+                                                </div>
+                                                <div data-bind="visible: model.presupuestoMController.codigoPresupuesto()!=='P_CS'" class="form-group col-sm-2 col-md-2">
+                                                    <label for="unidad_medida">Unidad Medida</label>
+                                                    <input id="unidad_medida" name="unidad_medida" type="text" class="form-control" data-bind="value: unidad_medida"
+                                                           data-error=".unidad_medida" readonly>
+                                                    <span class="unidad_medida text-danger help-inline"></span>
+                                                </div>
+
+
+                                                <div class="form-group col-sm-2 col-md-2">
+                                                    <label for="cantidad">Cantidad</label>
+                                                    <input id="cantidad" name="cantidad" type="number" class="form-control" data-bind="value: cantidad"
+                                                           data-error=".cantidad" required>
+                                                    <span class="cantidad text-danger help-inline"></span>
+                                                </div>
+
+                                                <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                                                    <button type="button" class="btn btn-success" data-bind="click:  model.presupuestoMController.guardarDetalle "><i class="fa fa-plus-square"></i> Agregar</button>
+                                                    @*<button type="button" class="btn btn-warning" data-bind="click:  model.presupuestoMController.FinishByFinca"><i class="fa fa-check"></i> Finalizar Presupuesto</button>*@
+
+                                                </div>
+                                            </div>
+                                            <!-- /.box-body -->
+                                        </div>
+                                        <!-- /.box -->
+                                    </div>
+
+
+                                    <div class="panel-body table-responsive">
+                                        <div class="with-border">
+                                            <h4 class="page-header">
+                                                <span data-bind="text: 'DETALLE '+model.presupuestoMController.nameFinca()"></span>
+                                                <button class="btn btn-success" data-bind="click: model.presupuestoMController.nuevoDetallePresupuesto" data-toggle="collapse" data-target="#displayId"><i class="fa fa-plus-circle"></i> Nuevo</button>
+                                                <button type="button" class="btn btn-danger" data-bind="click:  model.presupuestoMController.volverToSelect"><i class="fa fa-undo"></i> Volver a seleccion</button>
+                                            </h4>
+                                        </div>
+                                        <div>
+                                            <table class="table table-hover panel-body table-responsive">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Lote</th>
+                                                        <th data-bind="text: model.presupuestoMController.referencia(),
+                                                            visible: model.presupuestoMController.codigoPresupuesto() !== 'P_CS'"></th>
+                                                        <th data-bind="visible: model.presupuestoMController.codigoPresupuesto() === 'P_CS'">Cultivo</th>
+                                                        <th>Unidad Medida</th>
+                                                        <th class="text-right">Costo Unitario</th>
+                                                        <th class="text-right">Cantidad</th>
+                                                        <th class="text-right">SubTotal</th>
+                                                        <th>Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody data-bind="dataTablesForEach : {
+                                                        data: model.presupuestoMController.presupuestoManoObra,
+                                                        options: dataTableOptions
+                                                      }">
+                                                    <tr>
+                                                        <td data-bind="text: lote"></td>
+                                                        <td data-bind="text: nombre_referencia, visible: model.presupuestoMController.codigoPresupuesto() !== 'P_CS'"></td>
+                                                        <td data-bind="text: cultivo, visible: model.presupuestoMController.codigoPresupuesto() === 'P_CS'"></td>
+                                                        <td data-bind="text: unidad_medida"></td>
+                                                        <td class="text-right" data-bind="text: formatCurrency(parseFloat(costo).toFixed(2))"></td>
+                                                        <td class="text-right" data-bind="text: cantidad"></td>
+                                                        <td class="text-right" data-bind="text: formatCurrency(parseFloat(total_referencia).toFixed(2))"></td>
+                                                        <td>
+                                                            <a href="#" class="btn btn-warning btn-xs" data-bind="click: model.presupuestoMController.editarDetalle" data-toggle="collapse" data-target="#displayId"><i class="fa fa-pencil-square-o"></i></a>
+                                                            <a href="#" class="btn btn-danger btn-xs" data-bind="click: model.presupuestoMController.removerDetalle"><i class="fa fa-remove"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <h3 class="text-success text-right">Total:</h3>
+                                                    </td>
+                                                    <td>
+                                                        <h3 class="text-success text-right" data-bind="text: formatCurrency(model.presupuestoMController.totalFinca().toFixed(2))"></h3>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </form>
+
+                        <div data-bind="visible: model.presupuestoMController.isContable()">
+                            <div class="panel-body callout callout-success">
+                                <h3><span data-bind="text: model.presupuestoMController.title2()"></span></h3>
+                                <h3><span class="pull-right" data-bind="text: 'Total: '+ formatCurrency(model.presupuestoMController.total().toFixed(2))"></span></h3>
+                            </div>
+                            <div class="col-md-12">
+                                <div id="displayClass2" class="box box-success collapsed-box">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Nuevo</h3>
+
+                                        @*<div class="box-tools pull-right">
+                                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>*@
+                                        <!-- /.box-tools -->
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div id="displayId2" class="collapse box-body">
+                                        <form data-bind="with: model.presupuestoMController.contable">
+                                            <div class="form-group col-sm-6 col-md-6">
+                                                <label for="cuenta_contable">Cuenta Contable<span class="text-danger"> *</span></label>
+                                                <select id="cuenta_contableC" class="form-control show-tick selectpicker" data-live-search="true"
+                                                        data-bind="selectPicker: true,
+                                                            optionsText: function(type) {return type.numero+'-'+type.nombre},
+                                                            optionsValue: 'numero',
+                                                            value: codigo_cuenta,
+                                                            selectPickerOptions: { optionsArray: model.presupuestoMController.cuentas }"></select>
+                                            </div>
+                                            <div class="form-group col-sm-6 col-md-6">
+                                                <label for="lote">Lote<span class="text-danger"> *</span></label>
+                                                <select id="loteIdC" class="form-control show-tick selectpicker" data-live-search="true"
+                                                        data-bind="selectPicker: true,
+                                                            optionsText: function(type) {return type.codigo+'-'+type.nombre},
+                                                            optionsValue: 'Id',
+                                                            value: loteId,
+                                                            selectPickerOptions: { optionsArray: model.presupuestoMController.lotes }"></select>
+                                            </div>
+                                            <div class="form-group col-sm-2 col-md-2">
+                                                <label for="enero">Enero</label>
+                                                <input id="enero" name="enero" type="number" class="form-control" data-bind="value: enero"
+                                                       data-error=".enero" required>
+                                                <span class="enero text-danger help-inline"></span>
+                                            </div>
+                                            <div class="form-group col-sm-2 col-md-2">
+                                                <label for="febrero">Febrero</label>
+                                                <input id="febrero" name="febrero" type="number" class="form-control" data-bind="value: febrero"
+                                                       data-error=".febrero" required>
+                                                <span class="febrero text-danger help-inline"></span>
+                                            </div>
+                                            <div class="form-group col-sm-2 col-md-2">
+                                                <label for="marzo">Marzo</label>
+                                                <input id="marzo" name="cantidad" type="number" class="form-control" data-bind="value: marzo"
+                                                       data-error=".marzo" required>
+                                                <span class="marzo text-danger help-inline"></span>
+                                            </div>
+                                            <div class="form-group col-sm-2 col-md-2">
+                                                <label for="abril">Abril</label>
+                                                <input id="abril" name="abril" type="number" class="form-control" data-bind="value: abril"
+                                                       data-error=".abril" required>
+                                                <span class="abril text-danger help-inline"></span>
+                                            </div>
+                                            <div class="form-group col-sm-2 col-md-2">
+                                                <label for="mayo">Mayo</label>
+                                                <input id="mayo" name="mayo" type="number" class="form-control" data-bind="value: mayo"
+                                                       data-error=".mayo" required>
+                                                <span class="mayo text-danger help-inline"></span>
+                                            </div>
+                                            <div class="form-group col-sm-2 col-md-2">
+                                                <label for="junio">Junio</label>
+                                                <input id="junio" name="cantidad" type="number" class="form-control" data-bind="value: junio"
+                                                       data-error=".junio" required>
+                                                <span class="junio text-danger help-inline"></span>
+                                            </div>
+                                            <div class="form-group col-sm-2 col-md-2">
+                                                <label for="julio">Julio</label>
+                                                <input id="julio" name="julio" type="number" class="form-control" data-bind="value: julio"
+                                                       data-error=".julio" required>
+                                                <span class="julio text-danger help-inline"></span>
+                                            </div>
+                                            <div class="form-group col-sm-2 col-md-2">
+                                                <label for="agosto">Agosto</label>
+                                                <input id="agosto" name="agosto" type="number" class="form-control" data-bind="value: agosto"
+                                                       data-error=".agosto" required>
+                                                <span class="cantidad text-danger help-inline"></span>
+                                            </div>
+                                            <div class="form-group col-sm-2 col-md-2">
+                                                <label for="septiembre">Septiembre</label>
+                                                <input id="septiembre" name="septiembre" type="number" class="form-control" data-bind="value: septiembre"
+                                                       data-error=".septiembre" required>
+                                                <span class="septiembre text-danger help-inline"></span>
+                                            </div>
+                                            <div class="form-group col-sm-2 col-md-2">
+                                                <label for="octubre">Octubre</label>
+                                                <input id="octubre" name="octubre" type="number" class="form-control" data-bind="value: octubre"
+                                                       data-error=".octubre" required>
+                                                <span class="octubre text-danger help-inline"></span>
+                                            </div>
+                                            <div class="form-group col-sm-2 col-md-2">
+                                                <label for="noviembre">Noviembre</label>
+                                                <input id="noviembre" name="noviembre" type="number" class="form-control" data-bind="value: noviembre"
+                                                       data-error=".noviembre" required>
+                                                <span class="cantidad text-danger help-inline"></span>
+                                            </div>
+                                            <div class="form-group col-sm-2 col-md-2">
+                                                <label for="diciembre">Diciembre</label>
+                                                <input id="diciembre" name="diciembre" type="number" class="form-control" data-bind="value: diciembre"
+                                                       data-error=".diciembre" required>
+                                                <span class="diciembre text-danger help-inline"></span>
+                                            </div>
+                                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                                                <button type="button" class="btn btn-success" data-bind="click:  model.presupuestoMController.guardarDetalleContable "><i class="fa fa-plus-square"></i> Agregar</button>
+
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                                <!-- /.box -->
+                            </div>
+                            <div class="panel-body table-responsive">
+                                <div class="with-border">
+                                    <h4 class="page-header">
+                                        <span data-bind="text: 'DETALLE '+model.presupuestoMController.nameFinca()"></span>
+                                        <button class="btn btn-success" data-bind="click: model.presupuestoMController.nuevoDetalleContable" data-toggle="collapse" data-target="#displayId"><i class="fa fa-plus-circle"></i> Nuevo</button>
+                                        <button type="button" class="btn btn-danger" data-bind="click:  model.presupuestoMController.volverToSelect"><i class="fa fa-undo"></i> Volver a seleccion</button>
+                                    </h4>
+                                </div>
+                                <div>
+
+                                    <table class="table table-hover panel-body table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Cuenta Contable</th>
+                                                <th>Enero</th>
+                                                <th>Febebro</th>
+                                                <th>Marzo</th>
+                                                <th>Abril</th>
+                                                <th>Mayo</th>
+                                                <th>Junio</th>
+                                                <th>Julio</th>
+                                                <th>Agosto</th>
+                                                <th>Septiembre</th>
+                                                <th>Octubre</th>
+                                                <th>Noviembre</th>
+                                                <th>Diciembre</th>
+                                                <th>Subtotal</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody data-bind="dataTablesForEach : {
+                                    data: model.presupuestoMController.detalleContable,
+                                    options: dataTableOptions
+                                  }">
+                                            <tr>
+                                                <td data-bind="text: cuenta_contable"></td>
+                                                <td data-bind="text: formatCurrency(enero.toFixed(2))"></td>
+                                                <td data-bind="text: formatCurrency(febrero.toFixed(2))"></td>
+                                                <td data-bind="text: formatCurrency(marzo.toFixed(2))"></td>
+                                                <td data-bind="text: formatCurrency(abril.toFixed(2))"></td>
+                                                <td data-bind="text: formatCurrency(mayo.toFixed(2))"></td>
+                                                <td data-bind="text: formatCurrency(junio.toFixed(2))"></td>
+                                                <td data-bind="text: formatCurrency(julio.toFixed(2))"></td>
+                                                <td data-bind="text: formatCurrency(agosto.toFixed(2))"></td>
+                                                <td data-bind="text: formatCurrency(septiembre.toFixed(2))"></td>
+                                                <td data-bind="text: formatCurrency(octubre.toFixed(2))"></td>
+                                                <td data-bind="text: formatCurrency(noviembre.toFixed(2))"></td>
+                                                <td data-bind="text: formatCurrency(diciembre.toFixed(2))"></td>
+                                                <td data-bind="text: formatCurrency(total.toFixed(2))"></td>
+                                                <td>
+                                                    <a href="#" class="btn btn-warning btn-xs" data-bind="click: model.presupuestoMController.editarDetalleContable"><i class="fa fa-pencil-square-o"></i></a>
+                                                    <a href="#" class="btn btn-danger btn-xs" data-bind="click: model.presupuestoMController.removerDetalleContable"><i class="fa fa-remove"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <td colspan="4">
+                                                <h3 class="text-success text-right" data-bind="text: 'total: '+formatCurrency(model.presupuestoMController.totalContable().toFixed(2))"></h3>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        <!-- /.row -->
+        <!-- Main content view Mode-->
+        <div class="row" data-bind="visible: model.presupuestoMController.viewMode()">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <div class="text-right">
+                    <a data-bind="click: model.presupuestoMController.volverToCreate" class=" btn btn-danger box-title"><i class="fa fa-undo"> Volver</i></a>
+                </div>
+
+                <div class="content">
+                    <div class="panel-body callout callout-success">
+                        <h3><span class="box-title" data-bind="text: model.presupuestoMController.title2()"></span></h3>
+                        <h3><span class="pull-right" data-bind="text: 'Total: '+ formatCurrency(model.presupuestoMController.total().toFixed(2))"></span></h3>
+
+                        Seleccione Centro de Costo
+                    </div>
+                    <div class="box panel-body table-responsive">
+                        <div class="page-header">
+                            <!-- ko foreach: {data: model.presupuestoMController.ccostos, as: 'cc'} -->
+                            <button data-bind="click: model.presupuestoMController.viewDetails" class="bg-success btn-microsoft small">
+                                <i class="fa fa-institution"></i> <span data-bind="text: cc.descripcion, "></span>
+                            </button>
+                            <!-- /ko -->
+                        </div>
+
+                    </div>
+
+                    <div class="box panel-body table-responsive">
+                        <div class="box-header with-border">
+                            <h3 data-bind="text: model.presupuestoMController.nameFinca()" class="box-title"></h3>
+                        </div>
+                        <div class="page-header">
+                            <!-- ko foreach: {data: model.presupuestoMController.subccostos, as: 'cc'} -->
+                            <button data-bind="click: model.presupuestoMController.viewInfoCCostos" class="btn btn-primary btn-sm">
+                                <i class="fa fa-institution"></i> <span data-bind="text: cc.nombre, "></span>
+                            </button>
+                            <!-- /ko -->
+                        </div>
+
+                    </div>
+                    <div data-bind="visible: !model.presupuestoMController.isContableView()">
+                        <div class="row">
+                            <div class="col-md-6 col-xs-12 col-lg-8">
+                                <div class="box panel-body table-responsive">
+                                    <div class="box-header with-border">
+                                        <h3 data-bind="text: model.presupuestoMController.nameCCosto()" class="box-title"></h3>
+                                    </div>
+                                    <table class="table table-hover table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th width="20%">Lote</th>
+                                                <th data-bind="text: model.presupuestoMController.referencia(),
+                                                            visible: model.presupuestoMController.codigoPresupuesto() !== 'P_CS'"></th>
+                                                <th data-bind="visible: model.presupuestoMController.codigoPresupuesto() === 'P_CS'">Cultivo</th>
+                                                <th>Unidad Medida</th>
+                                                <th class="text-right">Costo Unitario</th>
+                                                <th class="text-right">Cantidad</th>
+                                                <th width="20%" class="text-right">SubTotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody data-bind="dataTablesForEach : {
+                                    data: model.presupuestoMController.presupuestoManoObra,
+                                    options: dataTableOptions
+                                  }">
+                                            <tr>
+                                                <td data-bind="text: lote"></td>
+                                                <td data-bind="text: nombre_referencia, visible: model.presupuestoMController.codigoPresupuesto() !== 'P_CS'"></td>
+                                                <td data-bind="text: cultivo, visible: model.presupuestoMController.codigoPresupuesto() === 'P_CS'"></td>
+                                                <td data-bind="text: unidad_medida"></td>
+                                                <td class="text-right" data-bind="text: formatCurrency(parseFloat(costo).toFixed(2))"></td>
+                                                <td class="text-right" data-bind="text: cantidad"></td>
+                                                <td class="text-right" data-bind="text: formatCurrency(parseFloat(total_referencia).toFixed(2))"></td>
+                                            </tr>
+                                        </tbody>
+
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="3">
+                                                <h4 class="text-success text-right">
+                                                    <b><span data-bind="text: 'Total: '+formatCurrency(model.presupuestoMController.totalFinca().toFixed(2))"></span></b>
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-xs-12 col-lg-4">
+                                <div class="box panel-body table-responsive">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Detalle Por Lote</h3>
+                                    </div>
+                                    <table class="table table-hover table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Lote</th>
+                                                <th class="text-right">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- ko foreach: {data: model.presupuestoMController.groupByLotes, as: 'ps'} -->
+                                            <tr>
+                                                <td data-bind="text: ps.lote"></td>
+                                                <td class="text-right" data-bind="text: formatCurrency(ps.total_lote.toFixed(2))"></td>
+                                            </tr>
+                                            <!-- /ko -->
+                                        </tbody>
+                                    </table>
+                                    <h4 class="text-success text-right">
+                                        <b><span data-bind="text:'Total: '+ formatCurrency(model.presupuestoMController.totalLotes().toFixed(2))"></span></b>
+                                    </h4>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8 col-sm-12 col-lg-8">
+
+                                <div data-bind="visible: model.presupuestoMController.codigoPresupuesto() == 'P_AG' || model.presupuestoMController.codigoPresupuesto()=='P_VT'" class="box panel-body table-responsive">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Detalle Por Grupo/Familia</h3>
+                                    </div>
+                                    <table class="table table-hover table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Grupo</th>
+                                                <th>Categoria</th>
+                                                <th class="text-right">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody data-bind="dataTablesForEach : {
+                                    data: model.presupuestoMController.detalleGrupos,
+                                    options: dataTableOptions
+                                  }">
+                                            <tr>
+                                                <td data-bind="text: nombre_grupo"></td>
+                                                <td data-bind="text: nombre_categoria"></td>
+                                                <td class="text-right" data-bind="text: formatCurrency(total_referencia.toFixed(2))"></td>
+                                            </tr>
+                                        </tbody>
+
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <h4>
+                                                    <b><span class="text-success pull-right" data-bind="text:'Total: '+ formatCurrency(model.presupuestoMController.totalLotes().toFixed(2))"></span></b>
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-12 col-lg-4">
+                                <div data-bind="visible: model.presupuestoMController.codigoPresupuesto() == 'P_AG'" class="box panel-body table-responsive">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Detalle Por Categorias</h3>
+                                    </div>
+                                    <table class="table table-hover table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Categoria</th>
+                                                <th class="text-right">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- ko foreach: {data: model.presupuestoMController.detalleCategorias, as: 'ps'} -->
+                                            <tr>
+                                                <td data-bind="text: ps.nombre_categoria"></td>
+                                                <td class="text-right" data-bind="text: formatCurrency(ps.total_referencia.toFixed(2))"></td>
+                                            </tr>
+                                            <!-- /ko -->
+                                        </tbody>
+                                    </table>
+                                    <h4 class="text-success text-right">
+                                        <b><span data-bind="text:'Total: '+ formatCurrency(model.presupuestoMController.totalLotes().toFixed(2))"></span></b>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-bind="visible: model.presupuestoMController.isContableView()">
+                        <div class="col-md-12 col-xs-12 col-lg-12">
+                            <div class="box panel-body table-responsive">
+                                <div class="box-header with-border">
+                                    <h3 data-bind="text: model.presupuestoMController.nameCCosto()" class="box-title"></h3>
+                                </div>
+                                <table class="table table-hover panel-body table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>Cuenta Contable</th>
+                                            <th>Enero</th>
+                                            <th>Febrero</th>
+                                            <th>Marzo</th>
+                                            <th>Abril</th>
+                                            <th>Mayo</th>
+                                            <th>Junio</th>
+                                            <th>Julio</th>
+                                            <th>Agosto</th>
+                                            <th>Septiembre</th>
+                                            <th>Octubre</th>
+                                            <th>Noviembre</th>
+                                            <th>Diciembre</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-bind="dataTablesForEach : {
+                                    data: model.presupuestoMController.detalleContable,
+                                    options: dataTableOptions
+                                  }">
+                                        <tr>
+                                            <td data-bind="text: cuenta_contable"></td>
+                                            <td data-bind="text: formatCurrency(enero.toFixed(2))"></td>
+                                            <td data-bind="text: formatCurrency(febrero.toFixed(2))"></td>
+                                            <td data-bind="text: formatCurrency(marzo.toFixed(2))"></td>
+                                            <td data-bind="text: formatCurrency(abril.toFixed(2))"></td>
+                                            <td data-bind="text: formatCurrency(mayo.toFixed(2))"></td>
+                                            <td data-bind="text: formatCurrency(junio.toFixed(2))"></td>
+                                            <td data-bind="text: formatCurrency(julio.toFixed(2))"></td>
+                                            <td data-bind="text: formatCurrency(agosto.toFixed(2))"></td>
+                                            <td data-bind="text: formatCurrency(septiembre.toFixed(2))"></td>
+                                            <td data-bind="text: formatCurrency(octubre.toFixed(2))"></td>
+                                            <td data-bind="text: formatCurrency(noviembre.toFixed(2))"></td>
+                                            <td data-bind="text: formatCurrency(diciembre.toFixed(2))"></td>
+                                            <td data-bind="text: formatCurrency(total.toFixed(2))"></td>
+                                        </tr>
+                                    </tbody>
+
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <td colspan="4">
+                                            <h3 class="text-success text-right" data-bind="text: 'total: '+formatCurrency(model.presupuestoMController.totalContable().toFixed(2))"></h3>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- /.modal -->
+        <div class="modal fade" id="status" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 data-bind="text: model.presupuestoMController.title2()" class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="panel-body table-responsive">
+                            <div class="with-border">
+                                <h5 class="page-header" data-bind="">Estado de presupuesto por centro de costo</h5>
+                            </div>
+                            <table class="table table-hover panel-body table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Centro de Costo</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="dataTablesForEach : {
+                                    data: model.presupuestoMController.asignados,
+                                    options: dataTableOptions
+                                  }">
+                                    <tr>
+                                        <td data-bind="text: centro_costo"></td>
+                                        <td><span class="label" data-bind="text: (estado === 'I' ? 'iniciado' : (estado == 'F' ? 'Finalizado' : 'No Iniciado')), css: (estado === 'I' ? 'label-success' : (estado === 'F'? 'label-primary': 'label-default'))"></span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-warning" data-bind="click: model.presupuestoMController.finalizar"><i class="fa fa-check-square-o"></i> Finalizar Presupuesto</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+    </section>
+</section><!-- /.content -->
+<!--Fin-Contenido-->
+
+@if (tipo != null)
+{
+    <script>
+        $(document).ready(function () {
+            model.presupuestoMController.initialize(@tipoId);
+            model.presupuestoMController.tipoName('@tipo.nombre');
+            model.presupuestoMController.codigoPresupuesto('@tipo.codigo');
+
+            if (model.presupuestoMController.codigoPresupuesto() === 'P_CT') {
+                model.presupuestoMController.optionMode(false);
+                model.presupuestoMController.gridMode(true);
+                model.presupuestoMController.title("Presupuesto Costos y Gastos");
+                model.presupuestoMController.ListarGrid('@tipoId', 'A');
+                model.presupuestoMController.presupuesto.tipo('A');
+            }
+
+            $("#volver").click(function () {
+                window.location.href = route + '/presupuesto/index';
+            });
+
+            $("#volver2").click(function () {
+                window.location.href = route + '/presupuesto/index';
+            });
+        });
+    </script>
+}
+
+    <script>
+        //var ExcelToJSON = function () {
+
+        //    this.parseExcel = function (file) {
+        //        var reader = new FileReader();
+
+        //        reader.onload = function (e) {
+        //            var data = e.target.result;
+        //            var workbook = XLSX.read(data, {
+        //                type: 'binary'
+        //            });
+        //            workbook.SheetNames.forEach(function (sheetName) {
+        //                 Here is your object
+        //                var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+        //                var json_object = JSON.stringify(XL_row_object);
+        //                console.log(JSON.parse(json_object));
+        //                jQuery('#xlx_json').val(json_object);
+        //            })
+        //        };
+
+        //        reader.onerror = function (ex) {
+        //            console.log(ex);
+        //        };
+
+        //        reader.readAsBinaryString(file);
+        //    };
+        //};
+        function handleFileSelect(evt) {
+            var files = evt.target.files; // FileList object
+            model.presupuestoMController.exelToJson(files[0]);
+            model.presupuestoMController.buttonFile(true);
+        }
+
+    </script>
+
+    <script>
+        document.getElementById('inputFile').addEventListener('change', handleFileSelect, false);
+    </script>
+
+
+
+
+
+
+
+
+

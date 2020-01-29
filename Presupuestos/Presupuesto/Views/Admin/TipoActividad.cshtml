@@ -1,0 +1,107 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "tipoActividad";
+}
+
+<!--Contenido-->
+<!-- Content Wrapper. Contains page content -->
+<!-- Main content -->
+<section class="content-wrapper">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div data-bind="visible: model.tipoActividadController.gridMode()">
+                        <div class="box-header with-border">
+                            <h1 class="box-title">Tipos de Actividad <span data-bind="text: model.tipoActividadController.name()"></span> <button class="btn btn-success" data-bind="click: model.tipoActividadController.nuevo"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                            
+                            <div>
+                                <hr />
+                                <!-- ko foreach: {data: model.tipoActividadController.tipos, as: 'tipo'} -->
+                                <a class="btn btn-primary" data-bind="text: tipo.nombre, click: model.tipoActividadController.selectTipo"></a>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- centro -->
+                        <div class="panel-body table-responsive" style="height: 400px;" id="listadoregistros">
+                            <table id="tipoActividadGrid" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Descripcion</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="dataTablesForEach : {
+                                    data: model.tipoActividadController.tipoActividades,
+                                    options: dataTableOptions
+                                  }">
+                                    <tr>
+                                        <td data-bind="text: nombre"></td>
+                                        <td data-bind="text: descripcion"></td>
+                                        <td>
+                                            <a href="#" class="btn btn-warning btn-xs" data-bind="click: model.tipoActividadController.editar"><i class="fa fa-pencil"></i></a>
+                                            <a href="#" class="btn btn-danger btn-xs" data-bind="click: model.tipoActividadController.remover"><i class="fa fa-trash-o"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--Fin centro -->
+                    </div>
+
+                    <div class="content" data-bind="visible: model.tipoActividadController.insertMode()">
+
+                        <form name="tipoActividadForm" id="tipoActividadForm" class="form" data-bind="with: model.tipoActividadController.tipoActividad">
+                            <div class="row">
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label for="nombre">Nombre<span class="text-danger"> *</span></label>
+                                    <input id="nombre" name="nombre" type="text" class="form-control" data-bind="value: nombre"
+                                           data-error=".errorNombre" required>
+                                    <span class="errorNombre text-danger help-inline"></span>
+                                </div>
+                                <div data-bind="visible: model.tipoActividadController.isClasificacion()" class="form-group col-sm-6 col-md-6">
+                                    <label for="nombre">Actividad Principal<span class="text-danger"> *</span></label>
+                                    <select class="form-control" id="actividad_principal" data-bind="options: model.tipoActividadController.principales, optionsText: 'nombre', optionsValue: 'Id', value: actividad_principal,
+                                                                                         optionsCaption: '--Seleccione actividad princial--'"></select>
+                                </div>
+                                <div class="form-group col-sm-12 col-md-12">
+                                    <label for="descripcion">Descripcion</label>
+                                    <textarea id="descripcion" name="descripcion" type="text" class="form-control" data-bind="value: descripcion"></textarea>
+                                    <span class="errorNombre text-danger help-inline"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <p class="text-center">
+                                    <button type="button" class="btn btn-info" data-bind="click:  model.tipoActividadController.guardar, disable: model.tipoActividadController.disable() "><i class="fa fa-save"></i> Guardar</button>
+                                    <button type="button" class="btn btn-danger" data-bind="click:  model.tipoActividadController.cancelar"><i class="fa fa-undo"></i> Cancelar</button>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </section>
+</section><!-- /.content -->
+<!--Fin-Contenido-->
+
+<script>
+        $(document).ready(function () {
+            model.tipoActividadController.initialize();
+        });
+</script>
+
+
+
+
+
+
+
+
+
+
+

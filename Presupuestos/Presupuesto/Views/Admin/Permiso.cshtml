@@ -1,0 +1,66 @@
+﻿
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Permiso";
+}
+
+<!--Contenido-->
+<!-- Content Wrapper. Contains page content -->
+<!-- Main content -->
+<section class="content-wrapper">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div data-bind="visible: model.categoriaController.gridMode()">
+                        <div class="box-header with-border">
+                            <h1 class="box-title">Permisos </h1>
+                            <div class="box-tools pull-right">
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- centro -->
+                        <div class="panel-body table-responsive" style="height: 400px;" id="listadoregistros">
+                            <table id="categoriaGrid" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">Codigo</th>
+                                        <th>Permiso</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- ko foreach: {data: model.permisoController.permisos, as: 'permiso'} -->
+                                    <tr>
+                                        <td data-bind="text: codigo"></td>
+                                        <td data-bind="text: nombre"></td>
+                                    </tr>
+                                    <!--/ko -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--Fin centro -->
+                    </div>
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </section>
+</section><!-- /.content -->
+<!--Fin-Contenido-->
+
+<script>
+        $(document).ready(function () {
+            model.permisoController.initialize();
+        });
+</script>
+
+
+
+
+
+
+
+
+
+

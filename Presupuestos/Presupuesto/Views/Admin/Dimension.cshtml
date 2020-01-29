@@ -1,0 +1,121 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "dimension";
+}
+
+<!--Contenido-->
+<!-- Content Wrapper. Contains page content -->
+<!-- Main content -->
+<section class="content-wrapper">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div data-bind="visible: model.dimensionController.gridMode()">
+                        <div class="box-header with-border">
+                            <h1 class="box-title">Dimensiones <button class="btn btn-success" data-bind="click: model.dimensionController.nuevo"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                            <div class="box-tools pull-right">
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- centro -->
+                        <div class="panel-body table-responsive" style="height: 400px;" id="listadoregistros">
+                            <table id="dimensionGrid" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th width="20%">Nombre</th>
+                                        <th>Agrupador</th>
+                                        <th>Cuenta Contable</th>
+                                        <th>Factor</th>
+                                        <th width="10%">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="dataTablesForEach : {
+                                    data: model.dimensionController.dimensiones,
+                                    options: dataTableOptions
+                                  }">
+                                    <tr>
+                                        <td data-bind="text: nombre"></td>
+                                        <td data-bind="text: agrupador"></td>
+                                        <td data-bind="text: nombre_cuenta"></td>
+                                        <td data-bind="text: factor+'%'"></td>
+                                        <td>
+                                            <a href="#" class="btn btn-warning btn-xs" data-bind="click: model.dimensionController.editar"><i class="fa fa-pencil"></i></a>
+                                            <a href="#" class="btn btn-danger btn-xs" data-bind="click: model.dimensionController.remover"><i class="fa fa-trash-o"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--Fin centro -->
+                    </div>
+
+                    <div class="content" data-bind="visible: model.dimensionController.insertMode()">
+
+                        <form name="dimensionForm" id="dimensionForm" class="form" data-bind="with: model.dimensionController.dimension">
+                            <div class="row">
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label for="nombre">Nombre<span class="text-danger"> *</span></label>
+                                    <input id="nombre" name="nombre" type="text" class="form-control" data-bind="value: nombre"
+                                           data-error=".errorNombre" required>
+                                    <span class="errorNombre text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label for="cuenta_contable">Cuenta Contable<span class="text-danger"> *</span></label>
+                                    <select id="cuenta_contable" class="form-control show-tick selectpicker" data-live-search="true"  
+                                            data-bind="selectPicker: true,
+                                            optionsText: function(type) {return type.numero+'-'+type.nombre},
+                                            optionsValue: 'numero',
+                                            value: cuenta_contable, 
+                                            selectPickerOptions: { optionsArray: model.dimensionController.cuentas }">
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label for="factor">Factor (%)</label>
+                                    <input id="factor" name="factor" type="number" step="0.1" class="form-control" data-bind="value: factor"
+                                           data-error=".factor">
+                                    <span class="factor text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label for="grupoId">Grupo Dimension<span class="text-danger"> *</span></label>
+                                    <select id="grupoId" class="form-control show-tick selectpicker" data-live-search="true"
+                                            data-bind="selectPicker: true,
+                                            optionsText: 'nombre',
+                                            optionsValue: 'Id', 
+                                            value: grupoId,
+                                            selectPickerOptions: { optionsArray: model.dimensionController.grupos }"></select>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <p class="text-center">
+                                    <button type="button" class="btn btn-info" data-bind="click:  model.dimensionController.guardar, disable: model.dimensionController.disable() "><i class="fa fa-save"></i> Guardar</button>
+                                    <button type="button" class="btn btn-danger" data-bind="click:  model.dimensionController.cancelar"><i class="fa fa-undo"></i> Cancelar</button>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </section>
+</section><!-- /.content -->
+<!--Fin-Contenido-->
+
+<script>
+        $(document).ready(function () {
+            model.dimensionController.initialize();
+        });
+</script>
+
+
+
+
+
+
+
+
+

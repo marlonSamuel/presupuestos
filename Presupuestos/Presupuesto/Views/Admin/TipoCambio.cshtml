@@ -1,0 +1,106 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "tipoCambio";
+}
+
+<!--Contenido-->
+<!-- Content Wrapper. Contains page content -->
+<!-- Main content -->
+<section class="content-wrapper">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div data-bind="visible: model.tipoCambioController.gridMode()">
+                        <div class="box-header with-border">
+                            <h1 class="box-title">tipo de Cambios <button class="btn btn-success" data-bind="click: model.tipoCambioController.nuevo"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                            <div class="box-tools pull-right">
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- centro -->
+                        <div class="panel-body table-responsive" style="height: 400px;" id="listadoregistros">
+                            <table id="tipoCambioGrid" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Pais</th>
+                                        <th>Moneda</th>
+                                        <th>Tipo Cambio</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="dataTablesForEach : {
+                                    data: model.tipoCambioController.tipoCambios,
+                                    options: dataTableOptions
+                                  }">
+                                    <tr>
+                                        <td data-bind="text: moment(fecha).format('L')"></td>
+                                        <td data-bind="text: pais"></td>
+                                        <td data-bind="text: moneda"></td>
+                                        <td data-bind="text: tipo_cambio"></td>
+                                        <td>
+                                            <a href="#" class="btn btn-warning btn-xs" data-bind="click: model.tipoCambioController.editar"><i class="fa fa-pencil"></i></a>
+                                            <a href="#" class="btn btn-danger btn-xs" data-bind="click: model.tipoCambioController.remover"><i class="fa fa-trash-o"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--Fin centro -->
+                    </div>
+
+                    <div class="content" data-bind="visible: model.tipoCambioController.insertMode()">
+
+                        <form name="tipoCambioForm" id="tipoCambioForm" class="form" data-bind="with: model.tipoCambioController.tipoCambio">
+                            <div class="row">
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="nombre">Fecha<span class="text-danger"> *</span></label>
+                                    <input id="nombre" name="nombre" type="date" class="form-control" data-bind="datePicker: fecha"
+                                           data-error=".errorNombre" required>
+                                    <span class="errorNombre text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="pais">Pais<span class="text-danger"> *</span></label>
+                                    <select class="form-control" id="pais" data-bind="options: model.tipoCambioController.paises, optionsText: 'nombre', optionsValue: 'Id', value: paisId"></select>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label for="tipo_cambio">Tipo Cambio<span class="text-danger"> *</span></label>
+                                    <input id="tipo_cambio" name="tipo_cambio" type="number" step="0.1" class="form-control" data-bind="value: tipo_cambio"
+                                           data-error=".errorNombre" required>
+                                    <span class="errorNombre text-danger help-inline"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <p class="text-center">
+                                    <button type="button" class="btn btn-info" data-bind="click:  model.tipoCambioController.guardar, disable: model.tipoCambioController.disable()"><i class="fa fa-save"></i> Guardar</button>
+                                    <button type="button" class="btn btn-danger" data-bind="click:  model.tipoCambioController.cancelar"><i class="fa fa-undo"></i> Cancelar</button>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </section>
+</section><!-- /.content -->
+<!--Fin-Contenido-->
+
+<script>
+        $(document).ready(function () {
+            model.tipoCambioController.initialize();
+        });
+</script>
+
+
+
+
+
+
+
+
+
+
+

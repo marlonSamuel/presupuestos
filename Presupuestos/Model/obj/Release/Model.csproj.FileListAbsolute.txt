@@ -1,0 +1,14 @@
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Model\bin\Release\Model.dll.config
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Model\bin\Release\Model.dll
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Model\bin\Release\Model.pdb
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Model\bin\Release\EntityFramework.dll
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Model\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Model\bin\Release\Helpers.dll
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Model\bin\Release\Helpers.pdb
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Model\bin\Release\Helpers.dll.config
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Model\bin\Release\EntityFramework.xml
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Model\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Model\obj\Release\Model.csprojResolveAssemblyReference.cache
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Model\obj\Release\Model.csproj.CoreCompileInputs.cache
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Model\obj\Release\Model.dll
+C:\Users\Sistemas-PC\Desktop\Presupuestos\Presupuestos\Model\obj\Release\Model.pdb

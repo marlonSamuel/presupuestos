@@ -1,0 +1,177 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "empleado";
+}
+
+<!--Contenido-->
+<!-- Content Wrapper. Contains page content -->
+<!-- Main content -->
+<section class="content-wrapper">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div data-bind="visible: model.empleadoController.gridMode()">
+                        <div class="box-header with-border">
+                            <h1 class="box-title">empleados <button class="btn btn-success" data-bind="click: model.empleadoController.nuevo"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                            <div class="box-tools pull-right">
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- centro -->
+                        <div class="panel-body table-responsive" style="height: 400px;" id="listadoregistros">
+                            <table id="empleadoGrid" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Nombres</th>
+                                        <th>Apellido</th>
+                                        <th>Centro de Costo</th>
+                                        <th>Departamento</th>
+                                        <th>Cargo</th>
+                                        <th>Tipo Empleado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="dataTablesForEach : {
+                                    data: model.empleadoController.empleados,
+                                    options: dataTableOptions
+                                  }">
+                                    <tr>
+                                        <td data-bind="text: codigo"></td>
+                                        <td data-bind="text: primer_nombre + ' ' +segundo_nombre"></td>
+                                        <td data-bind="text: primer_apellido + ' ' +segundo_apellido"></td>
+                                        <td data-bind="text: centro_costo"></td>
+                                        <td data-bind="text: departamento"></td>
+                                        <td data-bind="text: cargo"></td>
+                                        <td data-bind="text: tipo"></td>
+                                        <td>
+                                            <a href="#" class="btn btn-warning btn-xs" data-bind="click: model.empleadoController.editar"><i class="fa fa-pencil"></i></a>
+
+                                            <a href="#" class="btn btn-danger btn-xs" data-bind="click: model.empleadoController.remover"><i class="fa fa-trash-o"></i></a>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--Fin centro -->
+                    </div>
+
+                    <div class="content" data-bind="visible: model.empleadoController.insertMode()">
+
+                        <form name="empleadoForm" id="empleadoForm" class="form" data-bind="with: model.empleadoController.empleado">
+                            <div class="row">
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="codigo">Codigo<span class="text-danger"> *</span></label>
+                                    <input id="codigo" name="codigo" type="text" class="form-control" data-bind="value: codigo"
+                                           data-error=".errorCodigo"
+                                           minlength="3" maxlength="100" required>
+                                    <span class="errorNombre text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="nombre">Primer Nombre<span class="text-danger"> *</span></label>
+                                    <input id="nombre" name="nombre" type="text" class="form-control" data-bind="value: primer_nombre"
+                                           data-error=".errorNombre"
+                                           minlength="3" maxlength="100" required>
+                                    <span class="errorNombre text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="segundo_nombre">Segundo Nombre<span class="text-danger"> *</span></label>
+                                    <input id="segundo_nombre" name="segundo_nombre" type="text" class="form-control" data-bind="value: segundo_nombre"
+                                           data-error=".segundo_nombre"
+                                           minlength="3" maxlength="100" required>
+                                    <span class="segundo_nombre text-danger help-inline"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="primer_apellido">Primer Apellido<span class="text-danger"> *</span></label>
+                                    <input id="primer_apellido" name="primer_apellido" type="text" class="form-control" data-bind="value: primer_apellido"
+                                           data-error=".primer_apellido"
+                                           minlength="3" maxlength="100" required>
+                                    <span class="primer_apellido text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="segundo_apellido">Segundo Apellido<span class="text-danger"> *</span></label>
+                                    <input id="segundo_apellido" name="segundo_apellido" type="text" class="form-control" data-bind="value: segundo_apellido"
+                                           data-error=".segundo_apellido"
+                                           minlength="3" maxlength="100" required>
+                                    <span class="segundo_apellido text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="dpi">DPI<span class="text-danger"> *</span></label>
+                                    <input id="dpi" name="dpi" type="number" class="form-control" data-bind="value: dpi"
+                                           data-error=".dpi" required>
+                                    <span class="dpi text-danger help-inline"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="nombre">Centro de costo<span class="text-danger"> *</span></label>
+                                    <select class="form-control" id="fincaId" data-bind="options: model.empleadoController.fincas, optionsText: 'descripcion', optionsValue: 'codigo', value: fincaId"></select>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="departamento">Departamento<span class="text-danger"> *</span></label>
+                                    <select class="form-control" id="fincaId" data-bind="options: model.empleadoController.departamentos, optionsText: 'nombre', optionsValue: 'departamentoId', value: departamentoId"></select>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="cargoID">Cargos<span class="text-danger"> *</span></label>
+                                    <select class="form-control" id="cargoId" data-bind="options: model.empleadoController.cargos, optionsText: 'nombre', optionsValue: 'cargoId', value: cargoId"></select>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <label for="tipoId">Tipo Empleado<span class="text-danger"> *</span></label>
+                                    <select class="form-control" id="tipoId" data-bind="options: model.empleadoController.tipos, optionsText: 'nombre', optionsValue: 'tipoId', value: tipoId"></select>
+                                </div>
+
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="telefono">Telefono<span class="text-danger"> *</span></label>
+                                    <input id="telefono" name="telefono" type="text" class="form-control" data-bind="value: telefono"
+                                           data-error=".telefono"
+                                           minlength="3" maxlength="100" required>
+                                    <span class="telefono text-danger help-inline"></span>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label for="salario">Salario<span class="text-danger"> *</span></label>
+                                    <input id="salario" name="dpi" type="number" step="0.01" class="form-control" data-bind="value: salario"
+                                           data-error=".salario" required>
+                                    <span class="salario text-danger help-inline"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <p class="text-center">
+                                    <button type="button" class="btn btn-info" data-bind="click:  model.empleadoController.guardar "><i class="fa fa-save"></i> Guardar</button>
+                                    <button type="button" class="btn btn-danger" data-bind="click:  model.empleadoController.cancelar"><i class="fa fa-undo"></i> Cancel</button>
+                                </p>
+                            </div>
+                        </form>
+
+                    </div>
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </section>
+</section><!-- /.content -->
+<!--Fin-Contenido-->
+
+<script>
+        $(document).ready(function () {
+            model.empleadoController.initialize();
+        });
+</script>
+
+
+
+
+
+
+
+
+
+
